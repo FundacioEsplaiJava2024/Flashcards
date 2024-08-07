@@ -63,13 +63,11 @@ public class LoginActivity extends AppCompatActivity {
                 if(v.getId() == btLogin.getId()){
                     String username = etUsername.getText().toString();
                     String password = etPassword.getText().toString();
-                    System.out.println("aaaaaaaax");
 
                     if (false && (username.equals("") || password.equals(""))) {
                         etUsername.setText("");
                         etPassword.setText("");
                         tvError.setText("Rellena todos los campos");
-                        System.out.println("kxdadsa");
                         tvError.setVisibility(View.VISIBLE);
                     } else { //se llama al método login, enviando username, password y el contexto de la activity
                         openMainMenuScreen();
@@ -85,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
 
     //Método que abre la ventana del menú principal
     public void openMainMenuScreen(){
-        System.out.println("AAAAAAA");
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
     }

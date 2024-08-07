@@ -8,23 +8,35 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cdCard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/gradient"
         >
 
         <TextView
+            android:id="@+id/tvCardText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
             android:paddingTop="40dp"
-            android:text="Lalala"
+            android:text=""
+            android:justificationMode="inter_word"
+            android:textStyle="bold"
+            android:textAlignment="textStart"
+            android:textColor="@color/white"
             android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:flow_horizontalBias="0.0"
-            app:flow_verticalBias="1.0"/>
+            app:flow_verticalBias="1.0"
+
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="8sp"
+            android:autoSizeMaxTextSize="50sp"
+            android:autoSizeStepGranularity="2sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
