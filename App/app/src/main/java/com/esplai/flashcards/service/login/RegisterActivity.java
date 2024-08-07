@@ -13,6 +13,10 @@ import com.esplai.flashcards.service.login.LoginActivity;
 import com.esplai.flashcards.MainActivity;
 import com.esplai.flashcards.R;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+
 public class RegisterActivity extends AppCompatActivity {
     AppCompatButton btCreate, btLogin;
     EditText etUser, etMail, etContra, etRPcontra;
@@ -55,21 +59,34 @@ public class RegisterActivity extends AppCompatActivity {
                     String password = etContra.getText().toString();
                     String password1 = etRPcontra.getText().toString();
                     String mail = etMail.getText().toString();
-                    //login
+                    //register
                     if (username.equals("") || mail.equals("") || password.equals("") || password1.equals("")) {
                         etUser.setText("");
                         etRPcontra.setText("");
                         etContra.setText("");
-                        //se tiene que hacer una verificacion de si es un mail
                         etMail.setText("");
                         tvError.setText("Rellena todos los campos");
                         tvError.setVisibility(View.VISIBLE);
                     }
+                    //verifcacion de si es un mail
+                    else if (!isValidEmail(mail)) {
+                        etMail.setText("");
+                        tvError.setText("Correo no válido");
+                        tvError.setVisibility(View.VISIBLE);
+                    }
+                    //verificacion de la lonitut de la contraseña
+                    else if (password.length() < 8 || password1.length() < 8) {
+                        etContra.setText("");
+                        etRPcontra.setText("");
+                        tvError.setText("Minimo 8 caracteres");
+                        tvError.setVisibility(View.VISIBLE);
+                    }
+
                     //verificacio de contra
                     else if (! password.equals(password1)){
                         etContra.setText("");
                         etRPcontra.setText("");
-                        tvError.setText(("contra no identico"));
+                        tvError.setText(("Las contraseñas no son identicas"));
                         tvError.setVisibility(View.VISIBLE);
                     }else { //se llama al método login, enviando username, password y el contexto de la activity
                         openLoginScreen();
@@ -83,6 +100,14 @@ public class RegisterActivity extends AppCompatActivity {
             }
         };
     }
+
+    private boolean isValidEmail(String email) {
+        String emailPattern = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
 
 
     private void openLoginScreen() {
