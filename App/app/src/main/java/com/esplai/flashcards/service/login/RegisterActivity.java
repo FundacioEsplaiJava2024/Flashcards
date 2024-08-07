@@ -101,8 +101,9 @@ public class RegisterActivity extends AppCompatActivity {
         };
     }
 
+    //verificasion para el mail mediante un pattern
     private boolean isValidEmail(String email) {
-        String emailPattern = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        String emailPattern = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";//este codigo es para verificar el mail , que tenga el formato correcto
         Pattern pattern = Pattern.compile(emailPattern);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
