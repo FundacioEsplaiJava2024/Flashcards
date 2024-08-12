@@ -124,16 +124,19 @@ public class RegisterActivity extends AppCompatActivity {
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
         User newUser = new User(username, password, email);
         Call<User> call = apiService.createUser(newUser);
+        btCreate.setEnabled(false);
 
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(RegisterActivity.this, "Usuario creado exitosamente", Toast.LENGTH_SHORT).show();
+                    btCreate.setEnabled(true);
                     openLoginScreen();
                 } else {
                     tvError.setText("Error al crear usuario");
                     tvError.setVisibility(View.VISIBLE);
+                    btCreate.setEnabled(true);
                 }
             }
 
@@ -142,6 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
                 tvError.setText("Fallo en la solicitud: " + t.getMessage());
                 tvError.setVisibility(View.VISIBLE);
                 Log.e("RegisterActivity", "Error: " + t.getMessage());
+                btCreate.setEnabled(true);
             }
         });
     }
