@@ -2,20 +2,27 @@ package com.esplai.flashcards.service.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.esplai.flashcards.service.login.LoginActivity;
+import com.esplai.flashcards.model.User;
+import com.esplai.flashcards.network.ApiService;
+import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.MainActivity;
 import com.esplai.flashcards.R;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     AppCompatButton btCreate, btLogin;
@@ -59,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                     String password = etContra.getText().toString();
                     String password1 = etRPcontra.getText().toString();
                     String email = etMail.getText().toString();
-                    //register
+                    // Verifica si algún campo está vacío
                     if (username.equals("") || email.equals("") || password.equals("") || password1.equals("")) {
                         etUser.setText("");
                         etRPcontra.setText("");
@@ -68,43 +75,74 @@ public class RegisterActivity extends AppCompatActivity {
                         tvError.setText("Rellena todos los campos");
                         tvError.setVisibility(View.VISIBLE);
                     }
-                    //verifcacion de si es un mail
+                    // Verificación de si es un correo válido
                     else if (!isValidEmail(email)) {
                         etMail.setText("");
                         tvError.setText("Correo no válido");
                         tvError.setVisibility(View.VISIBLE);
                     }
-                    //verificacion de la lonitut de la contraseña
+                    // Verificación de la longitud de la contraseña
                     else if (password.length() < 8 || password1.length() < 8) {
                         etContra.setText("");
                         etRPcontra.setText("");
                         tvError.setText("Minimo 8 caracteres");
                         tvError.setVisibility(View.VISIBLE);
                     }
-
-                    //verificacio de contra
-                    else if (! password.equals(password1)){
+                    // Verificación de si las contraseñas coinciden
+                    else if (!password.equals(password1)) {
                         etContra.setText("");
                         etRPcontra.setText("");
-                        tvError.setText(("Las contraseñas no son identicas"));
+                        tvError.setText("Las contraseñas no son identicas");
                         tvError.setVisibility(View.VISIBLE);
+                    } else {
+                        // Llamar al método para registrar el usuario
+                        registerUser(username, password, email);
                     }
                 } else if (v.getId() == tvForgotPwd.getId()) {
+                    // Acciones para cuando se presiona "Olvidé mi contraseña"
                 } else if (v.getId() == btLogin.getId()) {
                     openLoginScreen();
                 }
             }
         };
     }
-    //verificasion para el mail mediante un pattern
+
+    // Verificación del formato de correo mediante un pattern
     private boolean isValidEmail(String email) {
-        String emailPattern = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";//este codigo es para verificar el mail , que tenga el formato correcto
+        String emailPattern = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"; // Este código es para verificar el mail, que tenga el formato correcto
         Pattern pattern = Pattern.compile(emailPattern);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
     private void openLoginScreen() {
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    private void registerUser(String username, String password, String email) {
+        ApiService apiService = ApiCliente.getClient().create(ApiService.class);
+        User newUser = new User(username, password, email);
+        Call<User> call = apiService.createUser(newUser);
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(RegisterActivity.this, "Usuario creado exitosamente", Toast.LENGTH_SHORT).show();
+                    openLoginScreen();
+                } else {
+                    tvError.setText("Error al crear usuario");
+                    tvError.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                tvError.setText("Fallo en la solicitud: " + t.getMessage());
+                tvError.setVisibility(View.VISIBLE);
+                Log.e("RegisterActivity", "Error: " + t.getMessage());
+            }
+        });
     }
 }

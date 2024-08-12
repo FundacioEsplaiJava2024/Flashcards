@@ -9,7 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 
-public interface ApiService{
-    @POST("/user/register")
+public interface ApiService {
+    @POST("/flashcards/user/register")
     Call<User> createUser(@Body User user);
 }
