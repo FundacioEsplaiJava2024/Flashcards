@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<CardModel> addList() {
         List<CardModel> cards = new ArrayList<>();
-        cards.add(new CardModel("Los aguacates no son una verdura, son una fruta. Al igual que sucede con los tomates, sobre los que hay tanta discusión. En el caso del delicioso aguacate, se considera una baya de una sola semilla."));
+        cards.add(new CardModel("Los aguacates no son una verdura, son una fruta. Al igual que sucede con los tomates, sobre los que hay tanta discusión. En el caso del delicioso aguacate, se considera una baya de una sola semilla.","hahahaha", false));
         cards.add(new CardModel("En los hospitales de Japón no hay habitaciones con el número 4 ni con el número 9. Esto se debe a que se consideran números de la muerte. El cuatro se lee Yon o Shi. Esta última palabra también significa muerte. Por su lado, el nueve se puede leer Kyu o Ku. De nuevo, la segunda opción significa muerte. Terroríficamente matemático. "));
         cards.add(new CardModel("La Torre Eiffel es casi 15 cm más alta durante el verano. Y no, no es magia. Se debe a la expansión térmica. Al calentarse el hierro, las partículas generan energía cinética, ocupando más espacio."));
         cards.add(new CardModel("Los cocodrilos no pueden sacar la lengua. La tienen pegada al paladar y a su membrana en toda su extensión. Quizá por eso siempre parecen tan serios. "));

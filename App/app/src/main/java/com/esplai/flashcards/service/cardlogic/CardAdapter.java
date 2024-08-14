@@ -1,9 +1,13 @@
 package com.esplai.flashcards.service.cardlogic;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,7 +62,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         TextView text;
         ConstraintLayout backgroundLayout;
         ImageView ivHeart;
-        View.OnClickListener listener;
+        boolean isShowingBackside = false; // Estado inicial mostrando la cara frontal
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,17 +70,24 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             backgroundLayout = itemView.findViewById(R.id.cdCard);
             ivHeart = itemView.findViewById(R.id.ivHeart);
 
-            ivHeart.setOnClickListener(listener);
-            listener = new View.OnClickListener(){
+            backgroundLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("ACHUUU");
-                    CardModel card = cardList.get(backgroundColorIndex); //TODO: Arreglar
-                    if(v.getId()==ivHeart.getId()){
-                        card.setLiked(!card.getLiked());
+                    CardModel card = cardList.get(getAdapterPosition());
+                    if (card.getBackside() != null) {
+                        flipCard(card);
                     }
                 }
-            };
+            });
+
+            ivHeart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CardModel card = cardList.get(getAdapterPosition());
+                    card.setLiked(!card.getLiked());
+                    notifyItemChanged(getAdapterPosition());
+                }
+            });
         }
 
         public void setData(CardModel cardModel) {
@@ -84,10 +95,59 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             backgroundLayout.setBackgroundColor(getNewBackgroundColor());
 
             if (cardModel.getLiked()) {
-                ivHeart.setColorFilter(Color.RED); // Cambia el color del corazón a rojo si está "liked"
+                ivHeart.setColorFilter(Color.RED);
             } else {
-                ivHeart.setColorFilter(Color.BLACK); // Cambia el color del corazón a gris si no está "liked"
+                ivHeart.setColorFilter(Color.GRAY);
             }
+
+            // Resetear el estado para mostrar la cara frontal cuando se vincule la tarjeta
+            isShowingBackside = false;
         }
+
+        private void flipCard(CardModel card) {
+            //Primera parte del flip
+            ObjectAnimator flipOutAnimator = ObjectAnimator.ofFloat(backgroundLayout, "rotationY", 0f, 90f);
+            flipOutAnimator.setDuration(250);
+            flipOutAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+
+            //Segunda parte del flip
+            ObjectAnimator flipInAnimator = ObjectAnimator.ofFloat(backgroundLayout, "rotationY", -90f, 0f);
+            flipInAnimator.setDuration(250);
+            flipInAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+
+            flipOutAnimator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    //Cambiar el texto después de la primera parte de la animación
+                    if (isShowingBackside) {
+                        // Volver a mostrar la parte frontal
+                        text.setText(card.getText());
+                    } else {
+                        // Mostrar la parte trasera
+                        text.setText(card.getBackside());
+                    }
+                    //Alterna el estado
+                    isShowingBackside = !isShowingBackside;
+
+                    //Inicia la segunda parte de la animación
+                    flipInAnimator.start();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                }
+            });
+            flipOutAnimator.start();
+        }
+
     }
+
 }
