@@ -1,0 +1,150 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/flash_card"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="30dp" />
+
+<!--    CARD NAME-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="150dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/CardName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="130dp"
+            android:fontFamily="@font/exo_2_semibold"
+            android:text="NAME OF A CARD"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/eCardName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/noborderedittext"
+            android:fontFamily="@font/exo_2"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="#F9F9F9"
+            android:textSize="15sp" />
+
+
+
+    </LinearLayout>
+
+<!--    TEXT OF A CARD-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="240dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/CardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="170dp"
+            android:fontFamily="@font/exo_2_semibold"
+            android:text="TEXT"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/eCardText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/noborderedittext"
+            android:fontFamily="@font/exo_2"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="#F9F9F9"
+            android:textSize="35sp"/>
+    </LinearLayout>
+
+  <!-- HASHTAG ## !-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="360dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/Hashtag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="40dp"
+            android:fontFamily="@font/exo_2_semibold"
+            android:text="HASHTAG"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/Hashtag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/noborderedittext"
+            android:fontFamily="@font/exo_2"
+            android:singleLine="true"
+            android:textAlignment="textStart"
+            android:textColor="#F9F9F9"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <!--BOTON DE CARTA PRIVADA -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="410dp"
+        android:layout_marginEnd="40dp">
+
+        <TextView
+            android:id="@+id/privateCardLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Private card"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="16sp"
+            android:layout_marginEnd="10dp" />
+
+        <Button
+            android:id="@+id/privateCardButton"
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"/>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
