@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,11 +17,10 @@ import androidx.appcompat.widget.AppCompatButton;
 import com.esplai.flashcards.MainActivity;
 import com.esplai.flashcards.R;
 
-import java.sql.SQLOutput;
-
 
 public class LoginActivity extends AppCompatActivity {
     AppCompatButton btLogin;
+    AppCompatButton btRegister;
     EditText etUsername, etPassword;
     TextView tvError, tvForgotPwd;
     View.OnClickListener listener;
@@ -42,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     //Se instancian los elementos de la pantalla
     private void instantiateElements() {
         btLogin = findViewById(R.id.btLogin);
+        btRegister = findViewById((R.id.btRegister));
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         tvError = findViewById(R.id.tvError);
@@ -53,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private void setElementsToListener() {
         btLogin.setOnClickListener(listener);
         tvForgotPwd.setOnClickListener(listener);
+        btRegister.setOnClickListener(listener);
     }
 
     //Se instancia un nuevo onclicklistener al listener con los elementos seteados
@@ -72,13 +71,21 @@ public class LoginActivity extends AppCompatActivity {
                     } else { //se llama al método login, enviando username, password y el contexto de la activity
                         openMainMenuScreen();
                     }
+
                 }//Al pulsar en la tvForgotPwd, se cambia de pantalla a la forgotPasswordActivity
-                else if(v.getId()==tvForgotPwd.getId()){
-                    //Intent intent = new Intent(getApplicationContext(), ForgotPasswordActivity.class); añadido por si se implementa más adelante
-                    //startActivity(intent);
+                else if (v.getId() == btRegister.getId()) {
+                    openMainRegisterScreen();
+                } else if (v.getId() == tvForgotPwd.getId()) {
+                    // Intent intent = new Intent(getApplicationContext(), ForgotPasswordActivity.class); // Añadido por si se implementa más adelante
+                    // startActivity(intent);
                 }
             }
         };
+    }
+    //metod para abrir el register
+    public void openMainRegisterScreen(){
+        Intent intent = new Intent(LoginActivity.this , RegisterActivity.class );
+        startActivity(intent);
     }
 
     //Método que abre la ventana del menú principal
