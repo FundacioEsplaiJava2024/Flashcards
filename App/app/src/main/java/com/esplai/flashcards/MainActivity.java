@@ -2,6 +2,7 @@ package com.esplai.flashcards;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.animation.LinearInterpolator;
@@ -16,6 +17,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.widget.SearchView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<CardModel> addList() {
         List<CardModel> cards = new ArrayList<>();
-        cards.add(new CardModel("Los aguacates no son una verdura, son una fruta. Al igual que sucede con los tomates, sobre los que hay tanta discusión. En el caso del delicioso aguacate, se considera una baya de una sola semilla."));
+        cards.add(new CardModel("Los aguacates no son una verdura, son una fruta. Al igual que sucede con los tomates, sobre los que hay tanta discusión. En el caso del delicioso aguacate, se considera una baya de una sola semilla.","hahahaha", false));
         cards.add(new CardModel("En los hospitales de Japón no hay habitaciones con el número 4 ni con el número 9. Esto se debe a que se consideran números de la muerte. El cuatro se lee Yon o Shi. Esta última palabra también significa muerte. Por su lado, el nueve se puede leer Kyu o Ku. De nuevo, la segunda opción significa muerte. Terroríficamente matemático. "));
         cards.add(new CardModel("La Torre Eiffel es casi 15 cm más alta durante el verano. Y no, no es magia. Se debe a la expansión térmica. Al calentarse el hierro, las partículas generan energía cinética, ocupando más espacio."));
         cards.add(new CardModel("Los cocodrilos no pueden sacar la lengua. La tienen pegada al paladar y a su membrana en toda su extensión. Quizá por eso siempre parecen tan serios. "));
@@ -136,16 +138,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+        // Configurar el SearchView
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Acción a realizar cuando se presiona el botón de búsqueda
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Acción a realizar cuando el texto de la búsqueda cambia
+                return false;
+            }
+        });
+
+        return true;
     }
 
     private void addFooter(Bundle savedInstance){
