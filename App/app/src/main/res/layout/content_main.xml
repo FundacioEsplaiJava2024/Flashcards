@@ -6,9 +6,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main">
-    <include
+    <FrameLayout
         android:id="@+id/footer"
-        layout="@layout/footer"
         android:layout_width="0dp"
         android:layout_height="95dp"
         app:layout_constraintStart_toStartOf="parent"
