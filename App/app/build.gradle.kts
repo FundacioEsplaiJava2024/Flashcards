@@ -35,6 +35,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.recyclerview)
+    implementation(libs.material.v100)
+    implementation(libs.card.stack.view)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)

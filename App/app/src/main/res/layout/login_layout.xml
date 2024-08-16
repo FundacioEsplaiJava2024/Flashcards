@@ -147,7 +147,6 @@
                 android:textColor="#F9F9F9"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
 
