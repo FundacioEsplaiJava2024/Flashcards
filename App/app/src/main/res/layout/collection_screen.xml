@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CollectionsActivity">
+    tools:context="ui.CollectionsActivity">
 
     <include
         android:id="@+id/footer"
@@ -18,20 +18,23 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/footer">
 
-        <LinearLayout
+        <GridLayout
+            android:paddingTop="?attr/actionBarSize"
             android:id="@+id/collectionsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-            <!-- Aquí se añadirán dinámicamente los elementos de colección -->
-        </LinearLayout>
+            android:columnCount="4"
+            android:layout_gravity="center">
 
+            <!-- Aquí se agregarán los elementos dinámicamente -->
+
+        </GridLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
