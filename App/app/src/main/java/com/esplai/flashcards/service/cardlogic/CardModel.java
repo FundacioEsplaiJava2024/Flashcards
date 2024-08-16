@@ -2,7 +2,7 @@ package com.esplai.flashcards.service.cardlogic;
 
 public class CardModel {
     private String text, backside;
-    private Boolean isLiked;
+    private Boolean isLiked = false;
 
     public CardModel() {
 

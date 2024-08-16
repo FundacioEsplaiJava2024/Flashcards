@@ -41,7 +41,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="top"
             android:layout_marginBottom="15dp"
             android:layout_weight="2"
             android:gravity="center_horizontal"
@@ -68,10 +68,13 @@
                 android:src="@drawable/sonido" />
 
             <ImageView
+                android:clickable="true"
+                android:id="@+id/ivHeart"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_gravity="end"
-                android:src="@drawable/heart" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/heart"/>
         </LinearLayout>
 
 
