@@ -49,4 +49,5 @@ dependencies {
     // Retrofit
     implementation (libs.squareup.retrofit)
     implementation (libs.converter.gson)
+    implementation (libs.security.crypto)
 }
