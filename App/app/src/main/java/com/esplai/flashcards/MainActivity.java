@@ -11,9 +11,12 @@ import android.widget.TextView;
 
 import com.esplai.flashcards.service.cardlogic.CardAdapter;
 import com.esplai.flashcards.service.cardlogic.CardModel;
+import com.esplai.flashcards.ui.Footer;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.widget.SearchView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -41,13 +44,14 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private ImageView ivSound;
+    private View footerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        addFooter(savedInstanceState);
         CardStackView cardStackView = findViewById(R.id.card_stack_view);
         manager = new CardStackLayoutManager(this, new CardStackListener() {
             @Override
@@ -155,5 +159,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    private void addFooter(Bundle savedInstance){
+        /*if(savedInstance == null)
+            return;
+        Fragment footer = new Footer();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.footer, footer).commit();*/
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.footer, new Footer(), "FOOTER")
+                .disallowAddToBackStack()
+                .commit();
     }
 }
