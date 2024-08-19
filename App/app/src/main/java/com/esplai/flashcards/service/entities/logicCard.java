@@ -8,7 +8,6 @@ import android.widget.EditText;
 import com.esplai.flashcards.MainActivity;
 import com.esplai.flashcards.R;
 
-
 public class AddCardActivity extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
