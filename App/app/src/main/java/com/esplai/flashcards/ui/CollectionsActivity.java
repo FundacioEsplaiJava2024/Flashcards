@@ -1,5 +1,6 @@
 package com.esplai.flashcards.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,28 +24,25 @@ public class CollectionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.collection_screen);
-
+        addFooter(savedInstanceState);
         collectionsContainer = findViewById(R.id.collectionsContainer);
-
-        // Simulación de datos para las colecciones
         List<Collection> collections = getCollectionsFromServer();
 
         for (Collection collection : collections) {
             addCollectionView(collection);
         }
     }
-
+    //Agrega las colecciones en la vista dinámicamente
     private void addCollectionView(Collection collection) {
         View collectionView = LayoutInflater.from(this).inflate(R.layout.collection_item, collectionsContainer, false);
 
         ImageView collectionIcon = collectionView.findViewById(R.id.collection_image);
         TextView collectionName = collectionView.findViewById(R.id.collection_title);
 
-        // Configura la vista con los datos de la colección
         collectionIcon.setImageResource(R.drawable.album_colored); // o una imagen dinámica si tienes una URL
         collectionName.setText(collection.getTitle());
 
-        // Ajusta los parámetros de layout para que se distribuyan correctamente en el GridLayout
+        //Ajusta los parámetros de layout para que se distribuyan correctamente en el GridLayout
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = 0;
         params.height = GridLayout.LayoutParams.WRAP_CONTENT;
@@ -52,6 +50,16 @@ public class CollectionsActivity extends AppCompatActivity {
         params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
         params.setMargins(8, 8, 8, 8);
         collectionView.setLayoutParams(params);
+
+        collectionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CollectionsActivity.this, CollectionDetailActivity.class);
+                intent.putExtra("collectionTitle", collection.getTitle());
+                intent.putExtra("collectionDescription", "Descripción de la colección"); // Simulación
+                startActivity(intent);
+            }
+        });
 
         // Añade la vista al contenedor
         collectionsContainer.addView(collectionView);
@@ -67,24 +75,14 @@ public class CollectionsActivity extends AppCompatActivity {
         collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
         collections.add(new Collection("Colección 2"));
         collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));
+
         return collections;
+    }
+    private void addFooter(Bundle savedInstance){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.footer, new Footer(), "FOOTER")
+                .disallowAddToBackStack()
+                .commit();
     }
 }
