@@ -12,6 +12,7 @@ lifecycleViewmodelKtx = "2.6.1"
 materialVersion = "1.0.0"
 navigationFragment = "2.7.7"
 navigationUi = "2.7.7"
+securityCrypto = "1.1.0-alpha06"
 squareupRetrofit = "2.9.0"
 
 [libraries]
@@ -29,6 +30,7 @@ lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-view
 material-v100 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
+security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 squareup-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "squareupRetrofit" }
 recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 
