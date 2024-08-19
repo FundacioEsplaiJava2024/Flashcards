@@ -64,30 +64,5 @@ public class Card {
         this.isPrivate = isPrivate;
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        // Obtener las referencias de los elementos UI
-        EditText eCardName = findViewById(R.id.eCardName);
-        EditText eCardText = findViewById(R.id.eCardText);
-        EditText eHashtag = findViewById(R.id.eHashtag);
-        CheckBox pCard = findViewById(R.id.pCard);
-
-        if (eCardName != null && eCardText != null && eHashtag != null && pCard != null) {
-            Card card = new Card(
-                    R.drawable.flash_card,
-                    eCardName.getText().toString(),
-                    eCardText.getText().toString(),
-                    eHashtag.getText().toString(),
-                    pCard.isChecked()
-            );
-        } else {
-            throw new RuntimeException("Una o más vistas no se encontraron. Revisa tus IDs y el layout.");
-        }
-    }
-    // faltaria conectarlo a a la base de datos
 }
 
