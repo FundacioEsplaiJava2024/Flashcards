@@ -1,37 +1,57 @@
 package com.esplai.flashcards.service.entities;
+import com.esplai.flashcards.service.cardlogic.CardModel;
+
+import java.util.List;
 
 public class Collection {
-    private int id;
-    private String name;
+    private int collId;
+    private String title;
+    private String description;
+    private List<CardModel> cardList;
+    private boolean isPublic;
 
-    public Collection(int id, String name) {
-
-        this.id = id;
-        this.name = name;
-
+    public Collection(String title) {
+        this.title = title;
     }
 
-    public int getId() {
-        return id;
-    }
-    public String getName(){
-        return name;
+    public int getCollId() {
+        return collId;
     }
 
-    public void setId(int id){
-        this.id = id;
-    }
-    public void setName(String name){
-        this.name = name;
+    public void setCollId(int collId) {
+        this.collId = collId;
     }
 
-    @Override
-    public String toString(){
-        return "Collection{" +
-                "id = " + id +
-                ", name = " + name + "}";
-
+    public String getTitle() {
+        return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<CardModel> getCardList() {
+        return cardList;
+    }
+
+    public void setCardList(List<CardModel> cardList) {
+        this.cardList = cardList;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
 
 }
