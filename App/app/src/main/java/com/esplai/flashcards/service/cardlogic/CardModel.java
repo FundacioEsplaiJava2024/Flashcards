@@ -1,49 +1,61 @@
 package com.esplai.flashcards.service.cardlogic;
 
+import java.time.LocalDateTime;
+
 public class CardModel {
-    private String text, backside;
-    private Boolean isLiked = false;
+    private String front, back, username, collection_title;
+    private Boolean favourite = false;
+    private LocalDateTime createdAt;
 
     public CardModel() {
 
     }
 
-    public CardModel(String text) {
-        this.text = text;
+    public CardModel(String front) {
+        this.front = front;
     }
 
-    public CardModel(String text, Boolean isLiked) {
-        this.text = text;
-        this.isLiked = isLiked;
+    public CardModel(String front, Boolean favourite) {
+        this.front = front;
+        this.favourite = favourite;
     }
 
-    public CardModel(String text, String backside, Boolean isLiked) {
-        this.text = text;
-        this.backside = backside;
-        this.isLiked = isLiked;
+    public CardModel(String front, String back, Boolean favourite, LocalDateTime createdAt, String collection_title, String username) {
+        this.front = front;
+        this.back = back;
+        this.favourite = favourite;
+        this.createdAt = createdAt;
+        this.collection_title = collection_title;
+        this.username = username;
     }
 
-    public String getText() {
-        return text;
+    public CardModel(String front, String back, Boolean favourite) {
+        this.front = front;
+        this.back = back;
+        this.favourite = favourite;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public String getFront() {
+        return front;
     }
 
-    public String getBackside() {
-        return backside;
+    public void setFront(String front) {
+        this.front = front;
     }
 
-    public void setBackside(String backside) {
-        this.backside = backside;
+    public String getBack() {
+        return back;
+    }
+
+    public void setBack(String back) {
+        this.back = back;
     }
 
     public Boolean getLiked() {
-        return isLiked;
+        return favourite;
     }
 
     public void setLiked(Boolean liked) {
-        isLiked = liked;
+        favourite = liked;
     }
 }

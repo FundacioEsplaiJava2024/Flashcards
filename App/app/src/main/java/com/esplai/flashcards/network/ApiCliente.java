@@ -1,6 +1,12 @@
 package com.esplai.flashcards.network;
 
 
+import com.esplai.flashcards.service.cardlogic.LocalDateTimeDeserializer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.time.LocalDateTime;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -11,9 +17,12 @@ public class ApiCliente {
     private static final String url="http://10.0.2.2:8182/";
     public static Retrofit getClient() {
         if (retrofit == null) {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer())
+                    .create();
             retrofit = new Retrofit.Builder()
                     .baseUrl(url)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
         return retrofit;

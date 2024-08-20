@@ -37,6 +37,7 @@ android {
 dependencies {
     implementation(libs.recyclerview)
     implementation(libs.material.v100)
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation(libs.card.stack.view)
     implementation(libs.appcompat)
     implementation(libs.material)
