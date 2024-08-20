@@ -1,5 +1,6 @@
 package com.esplai.flashcards;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
     private List<CardModel> addList() {
         final List<CardModel> cards = new ArrayList<>();
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
+
         // Obtener el token de SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("token", null);
@@ -142,20 +144,22 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MyApp", "Token recuperado: " + token);
             Call<List<CardModel>> call = apiService.getRandomCards(token);
 
-            call.enqueue(new Callback<List<CardModel>>(){
+            call.enqueue(new Callback<List<CardModel>>() {
                 @Override
-                public List<CardModel> onResponse(Call<List<CardModel>> call, Response <List<CardModel>> response) {
+                public void onResponse(Call<List<CardModel>> call, Response<List<CardModel>> response) {
                     if (response.isSuccessful()) {
-                        cards = response;
-                        return cards;
+                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "+response.body());
+                        List<CardModel> responseCards = response.body();
+                        if (responseCards != null) {
+                            cards.addAll(responseCards);
+                        }
                     } else {
                         Toast.makeText(MainActivity.this, "Error al recuperar las cartas", Toast.LENGTH_SHORT).show();
-                        return null;
                     }
                 }
 
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                public void onFailure(Call<List<CardModel>> call, Throwable t) {
                     Log.e("MainActivity", "Error: " + t.getMessage());
                     Toast.makeText(MainActivity.this, "Error al contactar con el servidor", Toast.LENGTH_SHORT).show();
                 }
@@ -164,10 +168,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("MyApp", "No se encontró ningún token");
         }
 
-
-
         return cards;
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

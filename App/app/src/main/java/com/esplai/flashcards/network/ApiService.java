@@ -10,8 +10,7 @@ import com.esplai.flashcards.service.cardlogic.CardModel;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
+import retrofit2.http.*;
 
 
 public interface ApiService {
