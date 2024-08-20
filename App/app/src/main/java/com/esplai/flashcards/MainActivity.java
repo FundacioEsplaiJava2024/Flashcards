@@ -1,5 +1,6 @@
 package com.esplai.flashcards;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -8,9 +9,14 @@ import android.view.Menu;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.esplai.flashcards.model.User;
+import com.esplai.flashcards.network.ApiCliente;
+import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.cardlogic.CardAdapter;
 import com.esplai.flashcards.service.cardlogic.CardModel;
+import com.esplai.flashcards.service.login.RegisterActivity;
 import com.esplai.flashcards.ui.Footer;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -36,6 +42,10 @@ import com.yuyakaido.android.cardstackview.SwipeableMethod;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -120,19 +130,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<CardModel> addList() {
-        List<CardModel> cards = new ArrayList<>();
-        cards.add(new CardModel("Los aguacates no son una verdura, son una fruta. Al igual que sucede con los tomates, sobre los que hay tanta discusión. En el caso del delicioso aguacate, se considera una baya de una sola semilla.","hahahaha", false));
-        cards.add(new CardModel("En los hospitales de Japón no hay habitaciones con el número 4 ni con el número 9. Esto se debe a que se consideran números de la muerte. El cuatro se lee Yon o Shi. Esta última palabra también significa muerte. Por su lado, el nueve se puede leer Kyu o Ku. De nuevo, la segunda opción significa muerte. Terroríficamente matemático. "));
-        cards.add(new CardModel("La Torre Eiffel es casi 15 cm más alta durante el verano. Y no, no es magia. Se debe a la expansión térmica. Al calentarse el hierro, las partículas generan energía cinética, ocupando más espacio."));
-        cards.add(new CardModel("Los cocodrilos no pueden sacar la lengua. La tienen pegada al paladar y a su membrana en toda su extensión. Quizá por eso siempre parecen tan serios. "));
-        cards.add(new CardModel("La miel nunca se echa a perder: Hay frascos de miel de más de 3000 años de antigüedad que se han encontrado en las tumbas de los faraones egipcios y todavía son comestibles. Esto se debe a su baja humedad y alta acidez, lo que impide el crecimiento de bacterias y otros microorganismos."));
-        cards.add(new CardModel("Hay más árboles en la Tierra que estrellas en la Vía Láctea: Se estima que hay unos 3 billones de árboles en el mundo, mientras que la Vía Láctea contiene entre 100.000 y 400.000 millones de estrellas."));
-        cards.add(new CardModel("Un día en Venus es más largo que un año en Venus: Venus gira muy lentamente sobre su eje, lo que significa que un día en Venus (243 días terrestres) es más largo que un año en Venus (225 días terrestres)"));
-        cards.add(new CardModel("El cerebro humano puede generar suficiente electricidad para encender una bombilla: Se estima que el cerebro humano produce alrededor de 20 vatios de electricidad en reposo, suficiente para iluminar una pequeña bombilla."));
-        cards.add(new CardModel("Los plátanos son ligeramente radiactivos: Esto se debe a su contenido en potasio, específicamente potasio-40, un isótopo radiactivo natural. Sin embargo, la radiación es tan mínima que no es dañina para los humanos."));
-        cards.add(new CardModel("El sonido viaja más rápido en el agua que en el aire: En el agua, el sonido se propaga a aproximadamente 1.484 metros por segundo, más de cuatro veces la velocidad a la que viaja en el aire."));
-        cards.add(new CardModel("Los caballos no pueden vomitar: La anatomía de su sistema digestivo, particularmente la fuerte unión entre el esófago y el estómago, impide que los caballos puedan vomitar. Esto hace que algunas condiciones de salud sean extremadamente peligrosas para ellos."));
-        cards.add(new CardModel("-Would you lose? \n-Nah, I'd win"));
+        final List<CardModel> cards = new ArrayList<>();
+        ApiService apiService = ApiCliente.getClient().create(ApiService.class);
+        // Obtener el token de SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", null);
+
+        // Verificar si se ha recuperado el token correctamente
+        if (token != null) {
+            // Usa el token como lo necesites
+            Log.d("MyApp", "Token recuperado: " + token);
+            Call<List<CardModel>> call = apiService.getRandomCards(token);
+
+            call.enqueue(new Callback<List<CardModel>>(){
+                @Override
+                public List<CardModel> onResponse(Call<List<CardModel>> call, Response <List<CardModel>> response) {
+                    if (response.isSuccessful()) {
+                        cards = response;
+                        return cards;
+                    } else {
+                        Toast.makeText(MainActivity.this, "Error al recuperar las cartas", Toast.LENGTH_SHORT).show();
+                        return null;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Log.e("MainActivity", "Error: " + t.getMessage());
+                    Toast.makeText(MainActivity.this, "Error al contactar con el servidor", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Log.d("MyApp", "No se encontró ningún token");
+        }
+
+
+
         return cards;
     }
 
