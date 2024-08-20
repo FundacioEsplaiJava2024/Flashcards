@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.esplai.flashcards.MainActivity;
 import com.esplai.flashcards.service.cardlogic.AddCardActivity;
+import com.esplai.flashcards.service.cardlogic.CreateCardActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.esplai.flashcards.R;
@@ -42,7 +43,7 @@ public class Footer extends Fragment {
                         return true;
                     case R.id.nav_add_card:
                         Log.d("Footer", "Add Card button pressed");
-                        Intent addCardIntent = new Intent(Footer.this.getActivity(), AddCardActivity.class);
+                        Intent addCardIntent = new Intent(Footer.this.getActivity(), CreateCardActivity.class);
                         startActivity(addCardIntent);
                         return true;
                     default:

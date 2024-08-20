@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                     // Guardar el token en SharedPreferences
                     SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("token", token);
+                    editor.putString("AccessToken", token); // Asegúrate de que la clave sea "AccessToken"
                     editor.apply();
 
                     // Mostrar mensaje de éxito y abrir la pantalla principal
