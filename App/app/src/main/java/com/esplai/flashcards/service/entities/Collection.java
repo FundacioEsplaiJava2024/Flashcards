@@ -2,13 +2,15 @@ package com.esplai.flashcards.service.entities;
 
 import com.esplai.flashcards.service.cardlogic.CardModel;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Collection {
     private int collId;
-    private String title, description;
+    private String title, description, username;
     private List<CardModel> cardList;
-    private boolean isPublic;
+    private boolean publicCollection;
+    private LocalDateTime createdAt;
 
     public Collection(String title) {
         this.title = title;
@@ -17,6 +19,15 @@ public class Collection {
     public Collection(String title, List<CardModel> cards) {
         this.title = title;
         this.cardList = cards;
+    }
+
+    public Collection(int collId, String title, String description, boolean publicCollection, LocalDateTime createdAt, String username) {
+        this.collId = collId;
+        this.title = title;
+        this.description = description;
+        this.publicCollection = publicCollection;
+        this.createdAt = createdAt;
+        this.username = username;
     }
 
     public int getCollId() {
@@ -51,12 +62,12 @@ public class Collection {
         this.cardList = cardList;
     }
 
-    public boolean isPublic() {
-        return isPublic;
+    public boolean isPublicCollection() {
+        return publicCollection;
     }
 
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
+    public void setPublicCollection(boolean publicCollection) {
+        this.publicCollection = publicCollection;
     }
 
 

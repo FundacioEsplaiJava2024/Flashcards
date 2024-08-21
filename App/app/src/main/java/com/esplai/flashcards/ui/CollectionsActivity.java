@@ -1,38 +1,106 @@
 package com.esplai.flashcards.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.esplai.flashcards.MainActivity;
 import com.esplai.flashcards.R;
+import com.esplai.flashcards.network.ApiCliente;
+import com.esplai.flashcards.network.ApiService;
+import com.esplai.flashcards.service.cardlogic.CardModel;
 import com.esplai.flashcards.service.entities.Collection;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectionsActivity extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+public class CollectionsActivity extends AppCompatActivity {
+    private boolean isLoadingCollections = false;
     private GridLayout collectionsContainer;
+    private List<Collection> collectionList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.collection_screen);
         addFooter(savedInstanceState);
-        collectionsContainer = findViewById(R.id.collectionsContainer);
-        List<Collection> collections = getCollectionsFromServer();
 
-        for (Collection collection : collections) {
-            addCollectionView(collection);
+        collectionsContainer = findViewById(R.id.collectionsContainer);
+
+        // Cargar las colecciones desde el servidor
+        getCollectionsFromServer();
+    }
+
+    // Método que realiza la petición al servidor y actualiza la interfaz con las colecciones recibidas
+    private void getCollectionsFromServer() {
+        if (isLoadingCollections) return; // Evitar llamadas múltiples
+        isLoadingCollections = true;
+
+        ApiService apiService = ApiCliente.getClient().create(ApiService.class);
+
+        // Recupera el token del usuario
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", null);
+
+        if (token != null) {
+            Call<List<Collection>> call = apiService.getCollectionsFromUser("Bearer " + token);
+
+            call.enqueue(new Callback<List<Collection>>() {
+                @Override
+                public void onResponse(Call<List<Collection>> call, Response<List<Collection>> response) {
+                    isLoadingCollections = false;
+
+                    if (response.isSuccessful()) {
+                        List<Collection> collectionsResponse = response.body();
+                        if (collectionsResponse != null && !collectionsResponse.isEmpty()) {
+                            collectionList.addAll(collectionsResponse);
+                            // Actualiza la interfaz de usuario después de recibir las colecciones
+                            for (Collection collection : collectionList) {
+                                addCollectionView(collection);
+                            }
+                        } else {
+                            Toast.makeText(CollectionsActivity.this, "No se encontraron más colecciones", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        try {
+                            Log.e("Collections", "Error body: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(CollectionsActivity.this, "Error al recuperar las colecciones", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Collection>> call, Throwable t) {
+                    isLoadingCollections = false;
+                    Log.e("Collections", "Error: " + t.getMessage());
+                    Toast.makeText(CollectionsActivity.this, "Error al contactar con el servidor", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } else {
+            isLoadingCollections = false;
+            Log.d("MyApp", "No se encontró ningún token");
         }
     }
-    //Agrega las colecciones en la vista dinámicamente
+
+    // Método para agregar las vistas de las colecciones dinámicamente
     private void addCollectionView(Collection collection) {
         View collectionView = LayoutInflater.from(this).inflate(R.layout.collection_item, collectionsContainer, false);
 
@@ -42,7 +110,7 @@ public class CollectionsActivity extends AppCompatActivity {
         collectionIcon.setImageResource(R.drawable.album_colored); // o una imagen dinámica si tienes una URL
         collectionName.setText(collection.getTitle());
 
-        //Ajusta los parámetros de layout para que se distribuyan correctamente en el GridLayout
+        // Ajusta los parámetros de layout para que se distribuyan correctamente en el GridLayout
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = 0;
         params.height = GridLayout.LayoutParams.WRAP_CONTENT;
@@ -65,20 +133,7 @@ public class CollectionsActivity extends AppCompatActivity {
         collectionsContainer.addView(collectionView);
     }
 
-    private List<Collection> getCollectionsFromServer() {
-        //Cambiar luego pot la petición
-        List<Collection> collections = new ArrayList<>();
-        collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-        collections.add(new Collection("Colección 2"));
-        collections.add(new Collection("Colección 3"));collections.add(new Collection("Colección 1"));
-
-        return collections;
-    }
-    private void addFooter(Bundle savedInstance){
+    private void addFooter(Bundle savedInstance) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.footer, new Footer(), "FOOTER")
@@ -86,3 +141,4 @@ public class CollectionsActivity extends AppCompatActivity {
                 .commit();
     }
 }
+
