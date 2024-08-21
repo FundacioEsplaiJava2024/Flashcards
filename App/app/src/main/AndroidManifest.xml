@@ -27,6 +27,7 @@
 
         <activity android:name=".MainActivity"/>
         <activity android:name=".ui.CollectionsActivity"/>
+        <activity android:name=".ui.CollectionDetailActivity"/>
         <activity android:name=".service.login.RegisterActivity" />
     </application>
 

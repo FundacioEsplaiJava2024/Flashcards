@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     private void addFooter(Bundle savedInstance) {
         getSupportFragmentManager()
                 .beginTransaction()

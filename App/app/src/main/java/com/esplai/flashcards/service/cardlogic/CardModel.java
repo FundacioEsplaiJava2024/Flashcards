@@ -7,6 +7,7 @@ public class CardModel {
     private Boolean favourite = false;
     private LocalDateTime createdAt;
 
+
     public CardModel() {
 
     }
