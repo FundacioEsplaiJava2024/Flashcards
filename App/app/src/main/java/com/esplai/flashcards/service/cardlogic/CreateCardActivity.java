@@ -1,5 +1,6 @@
 package com.esplai.flashcards.service.cardlogic;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import com.esplai.flashcards.R;
 import com.esplai.flashcards.model.Card;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
+import com.esplai.flashcards.service.collection.AddCollectionActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,7 +24,7 @@ import retrofit2.Response;
 public class CreateCardActivity extends AppCompatActivity {
 
     private EditText etFront, etBackside, etCollectionId;
-    private Button btCreateCard;
+    private Button btCreateCard , btCreateColecction;
     private ApiService apiService;
 
     @Override
@@ -35,6 +37,7 @@ public class CreateCardActivity extends AppCompatActivity {
         etBackside = findViewById(R.id.etBackside);
         etCollectionId = findViewById(R.id.etCollectionId);
         btCreateCard = findViewById(R.id.btCreateCard);
+        btCreateColecction = findViewById(R.id.btCreateColecction);
 
         // Inicializar ApiService
         apiService = ApiCliente.getClient().create(ApiService.class);
@@ -43,6 +46,14 @@ public class CreateCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 createCard();
+            }
+        });
+        // Añadir OnClickListener para el botón btCreateColecction
+        btCreateColecction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateCardActivity.this, AddCollectionActivity.class);
+                startActivity(intent);
             }
         });
     }

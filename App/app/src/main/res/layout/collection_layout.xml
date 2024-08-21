@@ -36,6 +36,28 @@
             android:textColor="#1b2631"
             android:textSize="16sp"
             android:padding="8dp" />
+        <TextView
+            android:id="@+id/tvdescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo_2_semibold"
+            android:text="Descrpcion de la Colección"
+            android:textColor="#1b2631"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etdescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/noborderedittext"
+            android:fontFamily="@font/exo_2"
+            android:hint="Introduce la descripcion de la colección"
+            android:inputType="text"
+            android:textColor="#1b2631"
+            android:textSize="16sp"
+            android:padding="8dp" />
 
         <CheckBox
             android:id="@+id/checkboxPublic"
@@ -60,6 +82,7 @@
             android:textStyle="bold"
             android:padding="12dp"
             android:minWidth="200dp" />
+
 
     </LinearLayout>
 

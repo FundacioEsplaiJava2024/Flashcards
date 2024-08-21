@@ -17,6 +17,7 @@ import com.esplai.flashcards.R;
 import com.esplai.flashcards.model.Collection;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
+import com.esplai.flashcards.service.cardlogic.CreateCardActivity;
 import com.esplai.flashcards.service.login.LoginActivity;
 
 import retrofit2.Call;
@@ -25,7 +26,7 @@ import retrofit2.Response;
 
 public class AddCollectionActivity extends AppCompatActivity {
 
-    private EditText etTitle;
+    private EditText etTitle , etdescription;
     private CheckBox checkboxPublic;
     private Button btCreateCollection;
     private ApiService apiService;
@@ -37,6 +38,7 @@ public class AddCollectionActivity extends AppCompatActivity {
 
         // Inicializar los elementos de la UI
         etTitle = findViewById(R.id.etTitle);
+        etdescription = findViewById(R.id.etdescription);
         checkboxPublic = findViewById(R.id.checkboxPublic);
         btCreateCollection = findViewById(R.id.btCreateCollection);
 
@@ -51,23 +53,17 @@ public class AddCollectionActivity extends AppCompatActivity {
             }
         });
 
-        // Verificar si el token está presente
-        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
-        String Token = sharedPreferences.getString("AccessToken", ""); // Debe ser "AccessToken"
 
-        if (Token == null || Token.isEmpty()) {
-            // Redirige al Login si no hay token
-            Intent loginIntent = new Intent(this, LoginActivity.class);
-            startActivity(loginIntent);
-            finish();
-            return;
-        }
     }
 
 
     private void createCollection() {
         String title = etTitle.getText().toString().trim();
+        String description = etdescription.getText().toString().trim();
         boolean isPublic = checkboxPublic.isChecked();
+
+        Log.d("AddCollectionActivity", "Title: " + title + ", Description: " + description + ", IsPublic: " + isPublic);
+
 
         if (title.isEmpty()) {
             Toast.makeText(this, "Por favor, introduce un título para la colección.", Toast.LENGTH_SHORT).show();
@@ -75,27 +71,26 @@ public class AddCollectionActivity extends AppCompatActivity {
         }
 
         // Recuperar el token de acceso almacenado
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String accessToken = sharedPreferences.getString("AccessToken", "");
 
         if (accessToken.isEmpty()) {
-            Toast.makeText(this, "Error: No se encontró el token de acceso. Por favor, inicia sesión de nuevo.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error: No se encontró ningún verificasion. Por favor, inicie sesión de nuevo.", Toast.LENGTH_SHORT).show();
             return;
         }
-
         // Crea el objeto de solicitud
-        Collection collectionRequest = new Collection(title, isPublic);
+        Collection collectionRequest = new Collection(title,description, isPublic);
 
         // Realiza la llamada a la API
         Call<Void> call = apiService.createCollection("Bearer " + accessToken, collectionRequest);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(AddCollectionActivity.this, "Colección creada con éxito.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(AddCollectionActivity.this, "Error al crear la colección.", Toast.LENGTH_SHORT).show();
-                }
+            if (response.isSuccessful()) {
+                Toast.makeText(AddCollectionActivity.this, "Coleccion creada con éxito", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(AddCollectionActivity.this, "No se pudo crear la Collecion", Toast.LENGTH_SHORT).show();
+            }
             }
 
             @Override

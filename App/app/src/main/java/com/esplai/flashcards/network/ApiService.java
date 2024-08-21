@@ -21,7 +21,7 @@ public interface ApiService {
     @POST("/flashcards/user/login")
     Call <AccesToken>loginUser(@Body LoginUser loginUser);
 
-    @POST("/collections")
+    @POST("/flashcards/collection")
     Call<Void> createCollection(@Header("Authorization") String token, @Body Collection request);
 
     @POST("/flashcards/card")
