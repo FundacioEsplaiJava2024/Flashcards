@@ -4,6 +4,7 @@ public class CardModel {
     private String text, backside;
     private Boolean isLiked = false;
 
+
     public CardModel() {
 
     }

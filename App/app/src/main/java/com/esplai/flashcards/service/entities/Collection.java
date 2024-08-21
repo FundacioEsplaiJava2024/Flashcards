@@ -6,13 +6,17 @@ import java.util.List;
 
 public class Collection {
     private int collId;
-    private String title;
-    private String description;
+    private String title, description;
     private List<CardModel> cardList;
     private boolean isPublic;
 
     public Collection(String title) {
         this.title = title;
+    }
+
+    public Collection(String title, List<CardModel> cards) {
+        this.title = title;
+        this.cardList = cards;
     }
 
     public int getCollId() {
@@ -54,4 +58,6 @@ public class Collection {
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
     }
+
+
 }

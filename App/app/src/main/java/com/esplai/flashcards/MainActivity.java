@@ -162,11 +162,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addFooter(Bundle savedInstance){
-        /*if(savedInstance == null)
-            return;
-        Fragment footer = new Footer();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.footer, footer).commit();*/
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.footer, new Footer(), "FOOTER")
