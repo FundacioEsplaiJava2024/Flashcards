@@ -62,9 +62,6 @@ public class AddCollectionActivity extends AppCompatActivity {
         String description = etdescription.getText().toString().trim();
         boolean isPublic = checkboxPublic.isChecked();
 
-        Log.d("AddCollectionActivity", "Title: " + title + ", Description: " + description + ", IsPublic: " + isPublic);
-
-
         if (title.isEmpty()) {
             Toast.makeText(this, "Por favor, introduce un título para la colección.", Toast.LENGTH_SHORT).show();
             return;

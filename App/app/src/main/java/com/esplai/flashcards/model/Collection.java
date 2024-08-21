@@ -1,9 +1,19 @@
 package com.esplai.flashcards.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Collection {
     private String title;
     private String description;
+
+    @SerializedName("public")
     private Boolean isPublic;
+
+    public Collection(String title, String description, boolean isPublic) {
+        this.title = title;
+        this.description = description;
+        this.isPublic = isPublic;
+    }
 
     public String getDescription() {
         return description;
@@ -28,11 +38,4 @@ public class Collection {
     public void setPublic(Boolean aPublic) {
         isPublic = aPublic;
     }
-
-    public Collection(String title, String description, boolean isPublic) {
-        this.title = title;
-        this.description = description;
-        this.isPublic = isPublic;
-    }
-
 }
