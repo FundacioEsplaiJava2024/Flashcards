@@ -36,16 +36,13 @@ public class AddCollectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.collection_layout);
 
-        // Inicializar los elementos de la UI
         etTitle = findViewById(R.id.etTitle);
         etdescription = findViewById(R.id.etdescription);
         checkboxPublic = findViewById(R.id.checkboxPublic);
         btCreateCollection = findViewById(R.id.btCreateCollection);
 
-        // Inicializar ApiService
         apiService = ApiCliente.getClient().create(ApiService.class);
 
-        // Configurar el listener para el botón
         btCreateCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,11 +68,11 @@ public class AddCollectionActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String accessToken = sharedPreferences.getString("AccessToken", "");
 
+        //acceso al token
         if (accessToken.isEmpty()) {
             Toast.makeText(this, "Error: No se encontró ningún verificasion. Por favor, inicie sesión de nuevo.", Toast.LENGTH_SHORT).show();
             return;
         }
-        // Crea el objeto de solicitud
         Collection collectionRequest = new Collection(title,description, isPublic);
 
         // Realiza la llamada a la API
