@@ -39,7 +39,6 @@ public class CreateCardActivity extends AppCompatActivity {
         btCreateCard = findViewById(R.id.btCreateCard);
         btCreateColecction = findViewById(R.id.btCreateColecction);
 
-        // Inicializar ApiService
         apiService = ApiCliente.getClient().create(ApiService.class);
 
         btCreateCard.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +47,6 @@ public class CreateCardActivity extends AppCompatActivity {
                 createCard();
             }
         });
-        // Añadir OnClickListener para el botón btCreateColecction
         btCreateColecction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
