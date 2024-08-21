@@ -54,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private CardStackLayoutManager manager;
     private CardAdapter adapter;
-    private List<CardModel> cardList; // Lista de cartas
+    private List<CardModel> cardList;
     private ActivityMainBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
+    private boolean isLoadingMoreCards = false; // Para controlar las solicitudes simultáneas
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         addFooter(savedInstanceState);
 
-        // Inicializar la lista de cartas y el adaptador
         cardList = new ArrayList<>();
         adapter = new CardAdapter(cardList);
 
@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCardSwiped(Direction direction) {
                 Log.d(TAG,"onCardSwiped: p-"+manager.getTopPosition()+" d-"+direction);
+
+                //Si llegamos al final de la lista, se cargan más cartas
+                if (manager.getTopPosition() == adapter.getItemCount() && !isLoadingMoreCards) {
+                    loadCards();
+                }
             }
 
             @Override
@@ -115,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
+    //Método que configura el swipe de las cartas. Para más info, mirar el repo de yuyakaido cardstackview
     public void loadCardSettings(CardStackView cardStackView) {
         manager.setStackFrom(StackFrom.None);
         manager.setVisibleCount(10);
@@ -131,14 +137,16 @@ public class MainActivity extends AppCompatActivity {
         cardStackView.setAdapter(adapter);
         cardStackView.setItemAnimator(new DefaultItemAnimator());
 
-        // Cargar las cartas
         loadCards();
     }
 
     private void loadCards() {
+        if (isLoadingMoreCards) return; //Evita llamadas múltiples
+        isLoadingMoreCards = true;
+
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
 
-        // Obtener el token de SharedPreferences
+        //Se recupera el token del user
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("token", null);
 
@@ -148,28 +156,36 @@ public class MainActivity extends AppCompatActivity {
             call.enqueue(new Callback<List<CardModel>>() {
                 @Override
                 public void onResponse(Call<List<CardModel>> call, Response<List<CardModel>> response) {
+                    isLoadingMoreCards = false; // Restablecer el estado de carga
+
                     if (response.isSuccessful()) {
-                        Log.d("MainActivity", "Response JSON: " + new Gson().toJson(response.body()));
                         List<CardModel> cards = response.body();
                         if (cards != null && !cards.isEmpty()) {
-                            cardList.clear();
-                            cardList.addAll(cards);
-                            adapter.notifyDataSetChanged();
+                            cardList.addAll(cards); // Agregar más cartas a la lista
+                            adapter.notifyDataSetChanged(); // Notificar al adaptador
                         } else {
-                            Toast.makeText(MainActivity.this, "No se encontraron cartas", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "No se encontraron más cartas", Toast.LENGTH_SHORT).show();
                         }
                     } else {
+                        try {
+                            Log.e("MainActivity", "Error body: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         Toast.makeText(MainActivity.this, "Error al recuperar las cartas", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<CardModel>> call, Throwable t) {
+                    isLoadingMoreCards = false;
+                    Log.e("MainActivity", "Error: " + t.getMessage());
                     Toast.makeText(MainActivity.this, "Error al contactar con el servidor", Toast.LENGTH_SHORT).show();
                 }
             });
 
         } else {
+            isLoadingMoreCards = false;
             Log.d("MyApp", "No se encontró ningún token");
         }
     }
@@ -184,13 +200,13 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //Acción a realizar cuando se presiona el botón de búsqueda
+                // Acción a realizar cuando se presiona el botón de búsqueda
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Acción a realizar cuando el texto de la búsqueda cambia
+                // Acción a realizar cuando el texto de la búsqueda cambia
                 return false;
             }
         });
@@ -206,3 +222,4 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 }
+
