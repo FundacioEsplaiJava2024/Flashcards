@@ -42,18 +42,17 @@ public class CollectionsActivity extends AppCompatActivity {
 
         collectionsContainer = findViewById(R.id.collectionsContainer);
 
-        // Cargar las colecciones desde el servidor
         getCollectionsFromServer();
     }
 
-    // Método que realiza la petición al servidor y actualiza la interfaz con las colecciones recibidas
+    //Método que realiza la petición al servidor y actualiza la interfaz con las colecciones recibidas
     private void getCollectionsFromServer() {
-        if (isLoadingCollections) return; // Evitar llamadas múltiples
+        if (isLoadingCollections) return; //Evit llamadas múltiples
         isLoadingCollections = true;
 
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
 
-        // Recupera el token del usuario
+        //Recupera el token del usuario
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("token", null);
 
@@ -69,7 +68,7 @@ public class CollectionsActivity extends AppCompatActivity {
                         List<Collection> collectionsResponse = response.body();
                         if (collectionsResponse != null && !collectionsResponse.isEmpty()) {
                             collectionList.addAll(collectionsResponse);
-                            // Actualiza la interfaz de usuario después de recibir las colecciones
+                            //Actualiza la interfaz de usuario después de recibir las colecciones
                             for (Collection collection : collectionList) {
                                 addCollectionView(collection);
                             }
@@ -100,7 +99,7 @@ public class CollectionsActivity extends AppCompatActivity {
         }
     }
 
-    // Método para agregar las vistas de las colecciones dinámicamente
+    //Agregar las vistas de las colecciones dinámicamente
     private void addCollectionView(Collection collection) {
         View collectionView = LayoutInflater.from(this).inflate(R.layout.collection_item, collectionsContainer, false);
 
@@ -123,13 +122,13 @@ public class CollectionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CollectionsActivity.this, CollectionDetailActivity.class);
+                intent.putExtra("collectionId", collection.getCollId());
                 intent.putExtra("collectionTitle", collection.getTitle());
-                intent.putExtra("collectionDescription", "Descripción de la colección"); // Simulación
+                intent.putExtra("collectionDescription", collection.getDescription());
                 startActivity(intent);
             }
         });
 
-        // Añade la vista al contenedor
         collectionsContainer.addView(collectionView);
     }
 

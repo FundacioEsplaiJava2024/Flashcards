@@ -1,11 +1,13 @@
 package com.esplai.flashcards.service.cardlogic;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CardModel {
     private String front, back, username, collection_title;
     private Boolean favourite = false;
     private LocalDateTime createdAt;
+    private List<String> hashtags;
 
 
     public CardModel() {
@@ -26,6 +28,15 @@ public class CardModel {
         this.back = back;
         this.favourite = favourite;
         this.createdAt = createdAt;
+        this.collection_title = collection_title;
+        this.username = username;
+    }
+    public CardModel(String front, String back, Boolean favourite, LocalDateTime createdAt, List<String> hashtags,String collection_title, String username) {
+        this.front = front;
+        this.back = back;
+        this.favourite = favourite;
+        this.createdAt = createdAt;
+        this.hashtags = hashtags;
         this.collection_title = collection_title;
         this.username = username;
     }
