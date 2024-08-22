@@ -58,7 +58,7 @@ public class RandomCollectionsActivity extends AppCompatActivity {
         String token = sharedPreferences.getString("token", null);
 
         if (token != null) {
-            Call<List<Collection>> call = apiService.getCollectionsFromUser("Bearer " + token);
+            Call<List<Collection>> call = apiService.getRandomCollections("Bearer " + token);
 
             call.enqueue(new Callback<List<Collection>>() {
                 @Override
@@ -73,11 +73,11 @@ public class RandomCollectionsActivity extends AppCompatActivity {
                                 addCollectionView(collection);
                             }
                         } else {
-                            Toast.makeText(RandomCollectionsActivity.this, "No se encontraron colecciones, prueba a crear o a guardar unas", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RandomCollectionsActivity.this, "No se encontraron colecciones", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         try {
-                            Log.e("Collections", "Error body: " + response.errorBody().string());
+                            Log.e("CollectionsRan", "Error body: " + response.errorBody().string());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -121,7 +121,7 @@ public class RandomCollectionsActivity extends AppCompatActivity {
         collectionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RandomCollectionsActivity.this, CollectionDetailActivity.class);
+                Intent intent = new Intent(RandomCollectionsActivity.this, CollectionOthersDetailsActivity.class);
                 intent.putExtra("collectionId", collection.getId());
                 intent.putExtra("collectionTitle", collection.getTitle());
                 intent.putExtra("collectionDescription", collection.getDescription());
