@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="8dp"
-            android:text="Pública"
+            android:text="Privada"
             android:textColor="#1b2631"
             android:textSize="16sp" />
 
