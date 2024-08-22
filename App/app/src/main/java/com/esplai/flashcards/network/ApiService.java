@@ -5,6 +5,7 @@ import com.esplai.flashcards.model.AccesToken;
 import com.esplai.flashcards.model.LoginUser;
 import com.esplai.flashcards.model.User;
 import com.esplai.flashcards.service.cardlogic.CardModel;
+import com.esplai.flashcards.service.entities.Collection;
 
 
 import java.util.List;
@@ -22,4 +23,10 @@ public interface ApiService {
 
     @GET("/flashcards/card/random")
     Call <List<CardModel>>getRandomCards(@Header("Authorization")String token);
+
+    @GET("/flashcards/collection")
+    Call <List<Collection>>getCollectionsFromUser(@Header("Authorization")String token);
+
+    @GET("/flashcards/card/collection/{collection_id}")
+    Call <List<CardModel>>getCollectionDetails(@Header("Authorization")String token,@Path("collection_id")int collectionId);
 }
