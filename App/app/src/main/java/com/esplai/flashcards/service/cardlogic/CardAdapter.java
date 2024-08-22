@@ -85,12 +85,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 public void onClick(View v) {
                     CardModel card = cardList.get(getAdapterPosition());
                     card.setLiked(!card.getLiked());
-                    notifyItemChanged(getAdapterPosition());
+                    if (card.getLiked()) {
+                        ivHeart.setColorFilter(Color.RED);
+                    } else {
+                        ivHeart.setColorFilter(Color.GRAY);
+                    }
                 }
             });
+
         }
 
-        public void setData(CardModel cardModel) {
+         public void setData(CardModel cardModel) {
             text.setText(cardModel.getText());
             backgroundLayout.setBackgroundColor(getNewBackgroundColor());
 
