@@ -3,7 +3,7 @@ package com.esplai.flashcards.model;
 import com.google.gson.annotations.SerializedName;
 
 public class Collection {
-    private int id; // Agregar el campo ID
+    private int id;
     private String title;
     private String description;
 
@@ -11,7 +11,7 @@ public class Collection {
     private Boolean isPublic;
 
     public Collection(String title, String description, boolean isPublic) {
-        this.id = id; // Inicializar el campo ID
+        this.id = id;
         this.title = title;
         this.description = description;
         this.isPublic = isPublic;

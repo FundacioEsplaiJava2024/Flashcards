@@ -5,7 +5,7 @@ public class Card {
     private String front;
     private String backside;
     private int collection_id;
-    private String hashtag; // Agregar el campo hashtag
+    private String hashtag;
 
     public Card(String front, String backside, int collectionId, String hashtag) {
         this.front = front;
@@ -14,7 +14,6 @@ public class Card {
         this.hashtag = hashtag;
     }
 
-    // Getters y Setters
     public String getFront() {
         return front;
     }
