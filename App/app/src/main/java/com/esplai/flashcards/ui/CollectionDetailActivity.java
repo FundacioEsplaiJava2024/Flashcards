@@ -26,7 +26,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CollectionDetailActivity extends AppCompatActivity {
-
     private TextView collectionTitle;
     private TextView collectionDescription;
     private RecyclerView cardsRecyclerView;

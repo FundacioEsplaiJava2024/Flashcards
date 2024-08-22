@@ -22,6 +22,8 @@ import com.esplai.flashcards.ui.Footer;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.widget.SearchView;
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private List<CardModel> cardList;
     private ActivityMainBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
-    private boolean isLoadingMoreCards = false; // Para controlar las solicitudes simultáneas
+    private boolean isLoadingMoreCards = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_collections)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -208,6 +211,15 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 // Acción a realizar cuando el texto de la búsqueda cambia
                 return false;
+            }
+        });
+        MenuItem menuItem = menu.findItem(R.id.action_open_drawer);
+        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                DrawerLayout drawerLayout = binding.drawerLayout;
+                drawerLayout.openDrawer(GravityCompat.START); // Abre el Navigation Drawer
+                return true;
             }
         });
 

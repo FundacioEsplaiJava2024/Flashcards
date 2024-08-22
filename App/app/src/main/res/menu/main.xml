@@ -6,4 +6,10 @@
         android:title="Search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/action_open_drawer"
+        android:icon="@drawable/menu"
+        android:title="Menú"
+     app:showAsAction="ifRoom" />
+
 </menu>
