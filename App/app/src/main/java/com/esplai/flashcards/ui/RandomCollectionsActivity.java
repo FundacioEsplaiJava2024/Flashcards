@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.GridLayout;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import com.esplai.flashcards.R;
 import com.esplai.flashcards.network.ApiCliente;
@@ -128,6 +131,49 @@ public class RandomCollectionsActivity extends AppCompatActivity {
 
         collectionsContainer.addView(collectionView);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchCollections(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterCollections(newText);
+                return false;
+            }
+        });
+
+        return true;
+    }
+    //Método para filtrar la lista de colecciones mientras se escribe
+    private void filterCollections(String query) {
+        List<Collection> filteredList = new ArrayList<>();
+        for (Collection collection : collectionList) {
+            if (collection.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(collection);
+            }
+        }
+        collectionsContainer.removeAllViews();
+        for (Collection collection : filteredList) {
+            addCollectionView(collection);
+        }
+    }
+
+    //Método para manejar la búsqueda cuando se envía el texto
+    private void searchCollections(String query) {
+        filterCollections(query);
+    }
+
+
 
     private void addFooter(Bundle savedInstance) {
         getSupportFragmentManager()
