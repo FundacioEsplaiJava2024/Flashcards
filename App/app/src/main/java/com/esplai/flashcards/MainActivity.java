@@ -1,6 +1,7 @@
 package com.esplai.flashcards;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,10 +19,13 @@ import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.cardlogic.CardAdapter;
 import com.esplai.flashcards.service.cardlogic.CardModel;
 import com.esplai.flashcards.service.login.RegisterActivity;
+import com.esplai.flashcards.ui.CollectionDetailActivity;
 import com.esplai.flashcards.ui.Footer;
+import com.esplai.flashcards.ui.RandomCollectionsActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
@@ -115,12 +119,25 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_collections)
+                R.id.nav_collections) //Añadir aquí las siguientes opciones del menú
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.nav_collections) {
+                    Intent intent = new Intent(MainActivity.this, RandomCollectionsActivity.class);
+                    startActivity(intent);
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+
+        });
     }
 
     //Método que configura el swipe de las cartas. Para más info, mirar el repo de yuyakaido cardstackview
