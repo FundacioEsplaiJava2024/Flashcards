@@ -5,17 +5,22 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.esplai.flashcards.R;
 import com.esplai.flashcards.model.Card;
+import com.esplai.flashcards.model.Collection;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.collection.AddCollectionActivity;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,9 +28,13 @@ import retrofit2.Response;
 
 public class CreateCardActivity extends AppCompatActivity {
 
-    private EditText etFront, etBackside, etCollectionId;
-    private Button btCreateCard , btCreateColecction;
+    private EditText etFront;
+    private EditText etBackside;
+    private Spinner etCollectionId;
+    private EditText etHashtag;
+    private Button btCreateCard, btCreateColecction;
     private ApiService apiService;
+    private List<Collection> collectionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +45,13 @@ public class CreateCardActivity extends AppCompatActivity {
         etFront = findViewById(R.id.etFront);
         etBackside = findViewById(R.id.etBackside);
         etCollectionId = findViewById(R.id.etCollectionId);
+        etHashtag = findViewById(R.id.etHashtag);
         btCreateCard = findViewById(R.id.btCreateCard);
         btCreateColecction = findViewById(R.id.btCreateColecction);
 
         apiService = ApiCliente.getClient().create(ApiService.class);
+
+        loadCollections();
 
         btCreateCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +59,7 @@ public class CreateCardActivity extends AppCompatActivity {
                 createCard();
             }
         });
+
         btCreateColecction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,24 +69,52 @@ public class CreateCardActivity extends AppCompatActivity {
         });
     }
 
+    private void loadCollections() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String accessToken = sharedPreferences.getString("AccessToken", "");
+
+        if (accessToken.isEmpty()) {
+            Toast.makeText(this, "Error: No se encontró ningún token de acceso. Por favor, inicie sesión de nuevo.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Call<List<Collection>> call = apiService.getCollections("Bearer " + accessToken);
+        call.enqueue(new Callback<List<Collection>>() {
+            @Override
+            public void onResponse(Call<List<Collection>> call, Response<List<Collection>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    collectionList = response.body();
+                    ArrayAdapter<Collection> adapter = new ArrayAdapter<>(CreateCardActivity.this,
+                            android.R.layout.simple_spinner_item, collectionList);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    etCollectionId.setAdapter(adapter);
+                } else {
+                    Toast.makeText(CreateCardActivity.this, "No se pudieron cargar las colecciones", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Collection>> call, Throwable t) {
+                Log.e("CreateCardActivity", "Error: " + t.getMessage(), t);
+                Toast.makeText(CreateCardActivity.this, "Error al cargar las colecciones", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
     private void createCard() {
         String front = etFront.getText().toString().trim();
         String backside = etBackside.getText().toString().trim();
-        String collectionIdStr = etCollectionId.getText().toString().trim();
+        String hashtag = etHashtag.getText().toString().trim();
+        Collection selectedCollection = (Collection) etCollectionId.getSelectedItem();
 
-
-        if (front.isEmpty() || backside.isEmpty() || collectionIdStr.isEmpty()) {
+        if (front.isEmpty() || backside.isEmpty() || selectedCollection == null) {
             Toast.makeText(this, "Por favor, rellene todos los campos.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int collectionId;
-        try {
-            collectionId = Integer.parseInt(collectionIdStr);
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "El ID de colección debe ser un número.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        int collectionId = selectedCollection.getId(); // Asegúrate de usar el método correcto para obtener el ID
 
         // Obtener el token de acceso
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
@@ -84,7 +125,7 @@ public class CreateCardActivity extends AppCompatActivity {
             return;
         }
 
-        Card cardRequest = new Card(front, backside, collectionId);
+        Card cardRequest = new Card(front, backside, collectionId, hashtag);
 
         // Hacer la solicitud de creación de la carta
         Call<Void> call = apiService.createCard("Bearer " + accessToken, cardRequest);
