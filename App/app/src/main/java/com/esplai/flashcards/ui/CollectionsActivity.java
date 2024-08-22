@@ -14,11 +14,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.esplai.flashcards.MainActivity;
 import com.esplai.flashcards.R;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
-import com.esplai.flashcards.service.cardlogic.CardModel;
 import com.esplai.flashcards.service.entities.Collection;
 
 import java.io.IOException;
@@ -68,12 +66,11 @@ public class CollectionsActivity extends AppCompatActivity {
                         List<Collection> collectionsResponse = response.body();
                         if (collectionsResponse != null && !collectionsResponse.isEmpty()) {
                             collectionList.addAll(collectionsResponse);
-                            //Actualiza la interfaz de usuario después de recibir las colecciones
                             for (Collection collection : collectionList) {
                                 addCollectionView(collection);
                             }
                         } else {
-                            Toast.makeText(CollectionsActivity.this, "No se encontraron más colecciones", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CollectionsActivity.this, "No se encontraron colecciones, prueba a crear o a guardar unas", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         try {
@@ -122,7 +119,7 @@ public class CollectionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CollectionsActivity.this, CollectionDetailActivity.class);
-                intent.putExtra("collectionId", collection.getCollId());
+                intent.putExtra("collectionId", collection.getId());
                 intent.putExtra("collectionTitle", collection.getTitle());
                 intent.putExtra("collectionDescription", collection.getDescription());
                 startActivity(intent);

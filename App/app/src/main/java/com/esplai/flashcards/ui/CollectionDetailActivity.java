@@ -77,15 +77,12 @@ public class CollectionDetailActivity extends AppCompatActivity {
                 public void onResponse(Call<List<CardModel>> call, Response<List<CardModel>> response) {
                     if (response.isSuccessful()) {
                         List<CardModel> cardsResponse = response.body();
-                        Log.d("API Response", "Cards size: " + (cardsResponse != null ? cardsResponse.size() : 0));
-
-
                         if (cardsResponse != null && !cardsResponse.isEmpty()) {
                             cardList.clear();
                             cardList.addAll(cardsResponse);
                             cardAdapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(CollectionDetailActivity.this, "No se encontraron cartas en esta colección", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CollectionDetailActivity.this, "No se encontraron cartas en esta colección, prueba a añadirlas", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         try {

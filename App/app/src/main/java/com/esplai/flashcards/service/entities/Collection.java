@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Collection {
-    private int collId;
+    private int id;
     private String title, description, username;
     private List<CardModel> cardList;
     private boolean publicCollection;
@@ -21,8 +21,8 @@ public class Collection {
         this.cardList = cards;
     }
 
-    public Collection(int collId, String title, String description, boolean publicCollection, LocalDateTime createdAt, String username) {
-        this.collId = collId;
+    public Collection(int id, String title, String description, boolean publicCollection, LocalDateTime createdAt, String username) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.publicCollection = publicCollection;
@@ -30,12 +30,12 @@ public class Collection {
         this.username = username;
     }
 
-    public int getCollId() {
-        return collId;
+    public int getId() {
+        return id;
     }
 
-    public void setCollId(int collId) {
-        this.collId = collId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
