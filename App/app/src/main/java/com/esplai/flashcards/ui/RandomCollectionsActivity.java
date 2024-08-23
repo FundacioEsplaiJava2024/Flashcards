@@ -50,6 +50,7 @@ public class RandomCollectionsActivity extends AppCompatActivity {
     private void getCollectionsFromServer() {
         if (isLoadingCollections) return;
         isLoadingCollections = true;
+        collectionList.clear();
 
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
 
