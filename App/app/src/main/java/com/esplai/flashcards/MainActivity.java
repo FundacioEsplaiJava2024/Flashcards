@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                             cardList.addAll(cards); // Add the searched cards
                             adapter.notifyDataSetChanged(); // Notify the adapter
                         } else {
-                            Toast.makeText(MainActivity.this, "No cards found for this hashtag", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "No se han encontrado tarjetas para este hashtag", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         try {
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(MainActivity.this, "Error retrieving cards", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Error al recuperar tarjetas", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -257,13 +257,13 @@ public class MainActivity extends AppCompatActivity {
                 public void onFailure(Call<List<CardModel>> call, Throwable t) {
                     isLoadingMoreCards = false;
                     Log.e("MainActivity", "Error: " + t.getMessage());
-                    Toast.makeText(MainActivity.this, "Error contacting the server", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Error al ponerse en contacto con el servidor", Toast.LENGTH_SHORT).show();
                 }
             });
 
         } else {
             isLoadingMoreCards = false;
-            Log.d("MyApp", "No token found");
+            Log.d("MyApp", "No se ha encontrado ningún token");
         }
     }
 
