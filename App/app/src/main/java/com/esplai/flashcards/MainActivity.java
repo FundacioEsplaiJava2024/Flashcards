@@ -13,11 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.esplai.flashcards.model.LoginUser;
 import com.esplai.flashcards.model.User;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.cardlogic.CardAdapter;
 import com.esplai.flashcards.service.cardlogic.CardModel;
+import com.esplai.flashcards.service.login.LoginActivity;
 import com.esplai.flashcards.service.login.RegisterActivity;
 import com.esplai.flashcards.ui.CollectionDetailActivity;
 import com.esplai.flashcards.ui.Footer;
@@ -136,6 +138,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (id == R.id.nav_savedCollections) {
                     Intent intent = new Intent(MainActivity.this, SavedCollectionsActivity.class);
+                    startActivity(intent);
+                }
+                if (id == R.id.nav_logout) {
+                    //Borra las sharedprefs
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
                 drawer.closeDrawer(GravityCompat.START);
