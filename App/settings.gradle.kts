@@ -16,10 +16,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven{
+            setUrl("https://jitpack.io")
+        }
         jcenter()
     }
 }
-
 rootProject.name = "FlashCards"
 include(":app")
  

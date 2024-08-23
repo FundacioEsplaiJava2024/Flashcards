@@ -200,19 +200,73 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Acción a realizar cuando se presiona el botón de búsqueda
-                return false;
+                // Perform search when the search button is pressed
+                searchHashtag(query);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // Acción a realizar cuando el texto de la búsqueda cambia
+                // You can handle text changes here if needed
                 return false;
             }
         });
 
         return true;
     }
+
+    // Method to handle hashtag search
+    private void searchHashtag(String hashtag) {
+        if (isLoadingMoreCards) return; // Avoid multiple requests
+        isLoadingMoreCards = true;
+
+        ApiService apiService = ApiCliente.getClient().create(ApiService.class);
+
+        // Retrieve the user's token
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", null);
+
+        if (token != null) {
+            Call<List<CardModel>> call = apiService.getCardsByHashtag("Bearer " + token, hashtag);
+
+            call.enqueue(new Callback<List<CardModel>>() {
+                @Override
+                public void onResponse(Call<List<CardModel>> call, Response<List<CardModel>> response) {
+                    isLoadingMoreCards = false; // Reset loading state
+
+                    if (response.isSuccessful()) {
+                        List<CardModel> cards = response.body();
+                        if (cards != null && !cards.isEmpty()) {
+                            cardList.clear(); // Clear the current list
+                            cardList.addAll(cards); // Add the searched cards
+                            adapter.notifyDataSetChanged(); // Notify the adapter
+                        } else {
+                            Toast.makeText(MainActivity.this, "No cards found for this hashtag", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        try {
+                            Log.e("MainActivity", "Error body: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(MainActivity.this, "Error retrieving cards", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<CardModel>> call, Throwable t) {
+                    isLoadingMoreCards = false;
+                    Log.e("MainActivity", "Error: " + t.getMessage());
+                    Toast.makeText(MainActivity.this, "Error contacting the server", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } else {
+            isLoadingMoreCards = false;
+            Log.d("MyApp", "No token found");
+        }
+    }
+
 
 
     private void addFooter(Bundle savedInstance) {
