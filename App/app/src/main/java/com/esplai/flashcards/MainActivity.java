@@ -1,6 +1,7 @@
 package com.esplai.flashcards;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,16 +13,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.esplai.flashcards.model.LoginUser;
 import com.esplai.flashcards.model.User;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.cardlogic.CardAdapter;
 import com.esplai.flashcards.service.cardlogic.CardModel;
+import com.esplai.flashcards.service.login.LoginActivity;
 import com.esplai.flashcards.service.login.RegisterActivity;
+import com.esplai.flashcards.ui.CollectionDetailActivity;
 import com.esplai.flashcards.ui.Footer;
+import com.esplai.flashcards.ui.RandomCollectionsActivity;
+import com.esplai.flashcards.ui.SavedCollectionsActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.widget.SearchView;
@@ -111,13 +120,41 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_collections) //Añadir aquí las siguientes opciones del menú
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.nav_collections) {
+                    Intent intent = new Intent(MainActivity.this, RandomCollectionsActivity.class);
+                    startActivity(intent);
+                }
+                if (id == R.id.nav_savedCollections) {
+                    Intent intent = new Intent(MainActivity.this, SavedCollectionsActivity.class);
+                    startActivity(intent);
+                }
+                if (id == R.id.nav_logout) {
+                    //Borra las sharedprefs
+                    SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
+
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+
+        });
     }
 
     //Método que configura el swipe de las cartas. Para más info, mirar el repo de yuyakaido cardstackview
@@ -205,6 +242,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
+            }
+        });
+        MenuItem menuItem = menu.findItem(R.id.action_open_drawer);
+        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                DrawerLayout drawerLayout = binding.drawerLayout;
+                drawerLayout.openDrawer(GravityCompat.START); // Abre el Navigation Drawer
+                return true;
             }
         });
 

@@ -7,9 +7,9 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
     <item
-        android:id="@+id/action_open_drawer"
-        android:icon="@drawable/menu"
+        android:id="@+id/refresh"
+        android:icon="@drawable/girar"
         android:title="Menú"
-     app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />
 
 </menu>
