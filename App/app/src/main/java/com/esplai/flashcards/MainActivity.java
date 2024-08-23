@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
 
+        //Se recupera el token del user
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("token", null);
 
@@ -192,12 +193,13 @@ public class MainActivity extends AppCompatActivity {
             call.enqueue(new Callback<List<CardModel>>() {
                 @Override
                 public void onResponse(Call<List<CardModel>> call, Response<List<CardModel>> response) {
-                    isLoadingMoreCards = false;
+                    isLoadingMoreCards = false; // Restablecer el estado de carga
+
                     if (response.isSuccessful()) {
                         List<CardModel> cards = response.body();
                         if (cards != null && !cards.isEmpty()) {
-                            cardList.addAll(cards);
-                            adapter.notifyDataSetChanged();
+                            cardList.addAll(cards); // Agregar más cartas a la lista
+                            adapter.notifyDataSetChanged(); // Notificar al adaptador
                         } else {
                             Toast.makeText(MainActivity.this, "No se encontraron más cartas", Toast.LENGTH_SHORT).show();
                         }
@@ -235,12 +237,13 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchHashtag(query);
-                return true;
+                // Acción a realizar cuando se presiona el botón de búsqueda
+                return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                // Acción a realizar cuando el texto de la búsqueda cambia
                 return false;
             }
         });
@@ -256,59 +259,6 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
-    // Method to handle hashtag search
-    private void searchHashtag(String hashtag) {
-        if (isLoadingMoreCards) return; // Avoid multiple requests
-        isLoadingMoreCards = true;
-
-        ApiService apiService = ApiCliente.getClient().create(ApiService.class);
-
-        // Retrieve the user's token
-        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", null);
-
-        if (token != null) {
-            Call<List<CardModel>> call = apiService.getCardsByHashtag("Bearer " + token, hashtag);
-
-            call.enqueue(new Callback<List<CardModel>>() {
-                @Override
-                public void onResponse(Call<List<CardModel>> call, Response<List<CardModel>> response) {
-                    isLoadingMoreCards = false;
-
-                    if (response.isSuccessful()) {
-                        List<CardModel> cards = response.body();
-                        if (cards != null && !cards.isEmpty()) {
-                            cardList.clear();
-                            cardList.addAll(cards);
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(MainActivity.this, "No se han encontrado tarjetas para este hashtag", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        try {
-                            Log.e("MainActivity", "Error body: " + response.errorBody().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(MainActivity.this, "Error al recuperar tarjetas", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<CardModel>> call, Throwable t) {
-                    isLoadingMoreCards = false;
-                    Log.e("MainActivity", "Error: " + t.getMessage());
-                    Toast.makeText(MainActivity.this, "Error al ponerse en contacto con el servidor", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        } else {
-            isLoadingMoreCards = false;
-            Log.d("MyApp", "No se ha encontrado ningún token");
-        }
-    }
-
 
 
     private void addFooter(Bundle savedInstance) {

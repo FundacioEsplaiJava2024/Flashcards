@@ -22,6 +22,7 @@ dependencyResolutionManagement {
         jcenter()
     }
 }
+
 rootProject.name = "FlashCards"
 include(":app")
  
