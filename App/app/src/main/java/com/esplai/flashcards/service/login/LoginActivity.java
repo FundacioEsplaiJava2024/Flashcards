@@ -46,6 +46,14 @@ public class LoginActivity extends AppCompatActivity {
         instantiateElements();
         prepareListener();
         setElementsToListener();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        String email = sharedPreferences.getString("email", null);
+        String pwd = sharedPreferences.getString("password", null);
+        if(email!=null && pwd!=null){
+            etUsername.setText(email);
+            etPassword.setText(pwd);
+        }
     }
 
     //Se instancian los elementos de la pantalla
@@ -111,6 +119,8 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("token", token);
+                    editor.putString("email",username);
+                    editor.putString("password", password);
                     editor.apply();
 
                     // Mostrar mensaje de éxito y abrir la pantalla principal

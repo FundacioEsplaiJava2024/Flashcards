@@ -8,5 +8,9 @@
             android:id="@+id/nav_collections"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Colecciones de usuarios" />
+        <item
+            android:id="@+id/nav_savedCollections"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Colecciones guardadas" />
     </group>
 </menu>

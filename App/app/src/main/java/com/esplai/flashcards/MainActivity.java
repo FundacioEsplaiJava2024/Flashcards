@@ -22,6 +22,7 @@ import com.esplai.flashcards.service.login.RegisterActivity;
 import com.esplai.flashcards.ui.CollectionDetailActivity;
 import com.esplai.flashcards.ui.Footer;
 import com.esplai.flashcards.ui.RandomCollectionsActivity;
+import com.esplai.flashcards.ui.SavedCollectionsActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -131,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.nav_collections) {
                     Intent intent = new Intent(MainActivity.this, RandomCollectionsActivity.class);
+                    startActivity(intent);
+                }
+                if (id == R.id.nav_savedCollections) {
+                    Intent intent = new Intent(MainActivity.this, SavedCollectionsActivity.class);
                     startActivity(intent);
                 }
                 drawer.closeDrawer(GravityCompat.START);

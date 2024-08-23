@@ -76,6 +76,7 @@
 
             <EditText
                 android:id="@+id/etPassword"
+                android:longClickable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"

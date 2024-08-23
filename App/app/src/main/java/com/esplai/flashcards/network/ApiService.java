@@ -33,6 +33,9 @@ public interface ApiService {
     @GET("/flashcards/card/collection/{collection_id}")
     Call <List<CardModel>>getCollectionDetails(@Header("Authorization")String token,@Path("collection_id")int collectionId);
 
-    @GET("/flashcards/collection/save/{id}")
+    @GET("/flashcards/collection/saved/{id}")
     Call <Collection>saveCollection(@Header("Authorization")String token,@Path("id")int id);
+
+    @GET("/flashcards/collection/saved")
+    Call <List<Collection>>getSavedCollections(@Header("Authorization")String token);
 }
