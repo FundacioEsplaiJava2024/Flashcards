@@ -42,6 +42,10 @@ public interface ApiService {
     @GET("/flashcards/card/random")
     Call <List<CardModel>>getRandomCards(@Header("Authorization")String token);
 
+    @GET("flashcards/card/hashtag")
+    Call<List<CardModel>> getCardsByHashtag(@Header("Authorization") String token, @Query("hashtag") String hashtag);
+
+
     @GET("/flashcards/collection")
     Call <List<Collection>>getCollectionsFromUser(@Header("Authorization")String token);
 
