@@ -20,6 +20,7 @@ import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.collection.AddCollectionActivity;
 
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -106,15 +107,18 @@ public class CreateCardActivity extends AppCompatActivity {
     private void createCard() {
         String front = etFront.getText().toString().trim();
         String backside = etBackside.getText().toString().trim();
-        String hashtag = etHashtag.getText().toString().trim();
+        String hashtags = etHashtag.getText().toString().trim();
         Collection selectedCollection = (Collection) etCollectionId.getSelectedItem();
 
-        if (front.isEmpty() || backside.isEmpty() || selectedCollection == null) {
+        // Verificar valores antes de la solicitud
+        Log.d("CreateCardActivity", "Hashtags capturado: " + hashtags);
+
+        if (front.isEmpty() || backside.isEmpty() || selectedCollection == null || hashtags.isEmpty()) {
             Toast.makeText(this, "Por favor, rellene todos los campos.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int collectionId = selectedCollection.getId(); // Asegúrate de usar el método correcto para obtener el ID
+        int collectionId = selectedCollection.getId();
 
         // Obtener el token de acceso
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
@@ -125,7 +129,7 @@ public class CreateCardActivity extends AppCompatActivity {
             return;
         }
 
-        Card cardRequest = new Card(front, backside, collectionId, hashtag);
+        Card cardRequest = new Card(front, backside, collectionId, Collections.singletonList(hashtags));
 
         // Hacer la solicitud de creación de la carta
         Call<Void> call = apiService.createCard("Bearer " + accessToken, cardRequest);
@@ -146,4 +150,5 @@ public class CreateCardActivity extends AppCompatActivity {
             }
         });
     }
+
 }
