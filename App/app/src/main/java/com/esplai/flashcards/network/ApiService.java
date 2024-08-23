@@ -2,6 +2,8 @@ package com.esplai.flashcards.network;
 
 
 import com.esplai.flashcards.model.AccesToken;
+import com.esplai.flashcards.model.Card;
+import com.esplai.flashcards.model.Collection;
 import com.esplai.flashcards.model.LoginUser;
 import com.esplai.flashcards.model.User;
 import com.esplai.flashcards.service.cardlogic.CardModel;
@@ -11,7 +13,10 @@ import com.esplai.flashcards.service.entities.Collection;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.*;
+
+import retrofit2.http.Body;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
 
 
 public interface ApiService {
@@ -29,4 +34,5 @@ public interface ApiService {
 
     @GET("/flashcards/card/collection/{collection_id}")
     Call <List<CardModel>>getCollectionDetails(@Header("Authorization")String token,@Path("collection_id")int collectionId);
+
 }

@@ -29,6 +29,8 @@
         <activity android:name=".ui.CollectionsActivity"/>
         <activity android:name=".ui.CollectionDetailActivity"/>
         <activity android:name=".service.login.RegisterActivity" />
+        <activity android:name=".service.collection.AddCollectionActivity"/>
+        <activity android:name=".service.cardlogic.CreateCardActivity" />
     </application>
 
 </manifest>
