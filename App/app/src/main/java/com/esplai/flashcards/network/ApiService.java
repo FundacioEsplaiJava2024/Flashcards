@@ -27,6 +27,12 @@ public interface ApiService {
     @GET("/flashcards/collection")
     Call <List<Collection>>getCollectionsFromUser(@Header("Authorization")String token);
 
+    @GET("/flashcards/collection/random")
+    Call <List<Collection>>getRandomCollections(@Header("Authorization")String token);
+
     @GET("/flashcards/card/collection/{collection_id}")
     Call <List<CardModel>>getCollectionDetails(@Header("Authorization")String token,@Path("collection_id")int collectionId);
+
+    @GET("/flashcards/collection/save/{id}")
+    Call <Collection>saveCollection(@Header("Authorization")String token,@Path("id")int id);
 }
