@@ -14,11 +14,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.esplai.flashcards.R;
-import com.esplai.flashcards.model.Collection;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.cardlogic.CreateCardActivity;
+import com.esplai.flashcards.service.entities.Collection;
 import com.esplai.flashcards.service.login.LoginActivity;
+import com.esplai.flashcards.ui.Footer;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +36,7 @@ public class AddCollectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.collection_layout);
+        addFooter(savedInstanceState);
 
         etTitle = findViewById(R.id.etTitle);
         etdescription = findViewById(R.id.etdescription);
@@ -50,9 +52,7 @@ public class AddCollectionActivity extends AppCompatActivity {
             }
         });
 
-
     }
-
 
     private void createCollection() {
         String title = etTitle.getText().toString().trim();
@@ -66,7 +66,7 @@ public class AddCollectionActivity extends AppCompatActivity {
 
         // Recuperar el token de acceso almacenado
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        String accessToken = sharedPreferences.getString("AccessToken", "");
+        String accessToken = sharedPreferences.getString("token", null);
 
         //acceso al token
         if (accessToken.isEmpty()) {
@@ -93,5 +93,12 @@ public class AddCollectionActivity extends AppCompatActivity {
                 Toast.makeText(AddCollectionActivity.this, "Ocurrió un error al comunicarse con la API.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void addFooter(Bundle savedInstance) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.footer, new Footer(), "FOOTER")
+                .disallowAddToBackStack()
+                .commit();
     }
 }

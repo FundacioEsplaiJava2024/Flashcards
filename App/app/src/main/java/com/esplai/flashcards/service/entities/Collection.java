@@ -30,6 +30,13 @@ public class Collection {
         this.username = username;
     }
 
+    public Collection(String title, String description, boolean isPublic) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.publicCollection = isPublic;
+    }
+
     public int getId() {
         return id;
     }

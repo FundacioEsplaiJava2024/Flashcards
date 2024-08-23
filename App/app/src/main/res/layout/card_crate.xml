@@ -14,9 +14,13 @@
         android:scaleType="centerInside"
         android:src="@drawable/flash_card"
         tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="30dp" />
+        tools:layout_editor_absoluteY="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!--    CARD NAME-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -47,8 +51,6 @@
             android:textAlignment="textStart"
             android:textColor="#F9F9F9"
             android:textSize="15sp" />
-
-
 
     </LinearLayout>
 
@@ -175,6 +177,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/borderedittext"/>
         ></LinearLayout>
+    <FrameLayout
+        android:id="@+id/footer"
+        android:layout_width="0dp"
+        android:elevation="8dp"
+        android:layout_height="95dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 

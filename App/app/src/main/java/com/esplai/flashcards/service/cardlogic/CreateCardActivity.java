@@ -15,10 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.esplai.flashcards.R;
 import com.esplai.flashcards.model.Card;
-import com.esplai.flashcards.model.Collection;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.collection.AddCollectionActivity;
+import com.esplai.flashcards.service.entities.Collection;
+import com.esplai.flashcards.ui.Footer;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +42,7 @@ public class CreateCardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_crate);
+        addFooter(savedInstanceState);
 
         // Inicializar los elementos de la UI
         etFront = findViewById(R.id.etFront);
@@ -79,7 +81,7 @@ public class CreateCardActivity extends AppCompatActivity {
             return;
         }
 
-        Call<List<Collection>> call = apiService.getCollections("Bearer " + accessToken);
+        Call<List<Collection>> call = apiService.getCollectionsFromUser("Bearer " + accessToken);
         call.enqueue(new Callback<List<Collection>>() {
             @Override
             public void onResponse(Call<List<Collection>> call, Response<List<Collection>> response) {
@@ -122,7 +124,7 @@ public class CreateCardActivity extends AppCompatActivity {
 
         // Obtener el token de acceso
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        String accessToken = sharedPreferences.getString("AccessToken", "");
+        String accessToken = sharedPreferences.getString("token", null);
 
         if (accessToken.isEmpty()) {
             Toast.makeText(this, "Error: No se encontró ningún token de acceso. Por favor, inicie sesión de nuevo.", Toast.LENGTH_SHORT).show();
@@ -149,6 +151,13 @@ public class CreateCardActivity extends AppCompatActivity {
                 Toast.makeText(CreateCardActivity.this, "Se ha producido un error. Por favor, inténtelo de nuevo.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void addFooter(Bundle savedInstance) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.footer, new Footer(), "FOOTER")
+                .disallowAddToBackStack()
+                .commit();
     }
 
 }
