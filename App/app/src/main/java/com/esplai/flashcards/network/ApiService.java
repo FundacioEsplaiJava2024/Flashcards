@@ -2,7 +2,7 @@ package com.esplai.flashcards.network;
 
 
 import com.esplai.flashcards.model.AccesToken;
-import com.esplai.flashcards.model.Card;
+
 import com.esplai.flashcards.model.LoginUser;
 import com.esplai.flashcards.model.User;
 import com.esplai.flashcards.service.cardlogic.CardModel;
@@ -31,7 +31,7 @@ public interface ApiService {
     Call<Void> createCollection(@Header("Authorization") String token, @Body Collection request);
 
     @POST("/flashcards/card")
-    Call<Void> createCard(@Header("Authorization") String token, @Body Card card);
+    Call<Void> createCard(@Header("Authorization") String token, @Body CardModel card);
 
     @GET("/flashcards/card/random")
     Call <List<CardModel>>getRandomCards(@Header("Authorization")String token);

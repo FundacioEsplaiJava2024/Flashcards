@@ -12,7 +12,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerInside"
-        android:src="@drawable/flash_card"
+        android:src="@drawable/album_colored"
         tools:layout_editor_absoluteX="150dp"
         tools:layout_editor_absoluteY="30dp"
         app:layout_constraintTop_toTopOf="parent"

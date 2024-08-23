@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.esplai.flashcards.R;
-import com.esplai.flashcards.model.Card;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.collection.AddCollectionActivity;
@@ -74,7 +73,7 @@ public class CreateCardActivity extends AppCompatActivity {
 
     private void loadCollections() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        String accessToken = sharedPreferences.getString("AccessToken", "");
+        String accessToken = sharedPreferences.getString("token", null);
 
         if (accessToken.isEmpty()) {
             Toast.makeText(this, "Error: No se encontró ningún token de acceso. Por favor, inicie sesión de nuevo.", Toast.LENGTH_SHORT).show();
@@ -131,7 +130,7 @@ public class CreateCardActivity extends AppCompatActivity {
             return;
         }
 
-        Card cardRequest = new Card(front, backside, collectionId, Collections.singletonList(hashtags));
+        CardModel cardRequest = new CardModel(front, backside, collectionId, Collections.singletonList(hashtags));
 
         // Hacer la solicitud de creación de la carta
         Call<Void> call = apiService.createCard("Bearer " + accessToken, cardRequest);

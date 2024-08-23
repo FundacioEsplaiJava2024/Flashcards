@@ -76,6 +76,9 @@ public class Collection {
     public void setPublicCollection(boolean publicCollection) {
         this.publicCollection = publicCollection;
     }
-
+    @Override
+    public String toString() {
+        return title; // Mostrar el título en el Spinner
+    }
 
 }
