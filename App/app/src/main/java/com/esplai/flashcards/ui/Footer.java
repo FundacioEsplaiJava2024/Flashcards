@@ -1,22 +1,19 @@
 package com.esplai.flashcards.ui;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.esplai.flashcards.MainActivity;
 import com.esplai.flashcards.R;
-import com.esplai.flashcards.service.cardlogic.AddCardActivity;
+import com.esplai.flashcards.service.cardlogic.CreateCardActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -43,7 +40,7 @@ public class Footer extends Fragment {
                         return true;
                     case R.id.nav_add_card:
                         Log.d("Footer", "Add Card button pressed");
-                        startActivity(new Intent(getActivity(), AddCardActivity.class));
+                        startActivity(new Intent(getActivity(), CreateCardActivity.class));
                         return true;
                     default:
                         return false;

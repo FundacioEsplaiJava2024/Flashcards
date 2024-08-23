@@ -145,6 +145,7 @@ public class CollectionOthersDetailsActivity extends AppCompatActivity {
             Toast.makeText(this, "No se encontró el token", Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.button_menu, menu);
@@ -160,8 +161,6 @@ public class CollectionOthersDetailsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     private void addFooter(Bundle savedInstance) {
         getSupportFragmentManager()

@@ -8,6 +8,7 @@ public class CardModel {
     private Boolean favourite = false;
     private LocalDateTime createdAt;
     private List<String> hashtags;
+    private int collectionId;
 
 
     public CardModel() {
@@ -47,6 +48,13 @@ public class CardModel {
         this.favourite = favourite;
     }
 
+    public <T> CardModel(String front, String back, int collectionId, List<String> ts) {
+        this.front = front;
+        this.back = back;
+        this.collectionId = collectionId;
+        this.hashtags = ts;
+    }
+
     public String getFront() {
         return front;
     }
@@ -69,5 +77,29 @@ public class CardModel {
 
     public void setLiked(Boolean liked) {
         favourite = liked;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public List<String> getHashtags() {
+        return hashtags;
+    }
+
+    public void setHashtags(List<String> hashtags) {
+        this.hashtags = hashtags;
+    }
+
+    public int getCollectionId() {
+        return collectionId;
+    }
+
+    public void setCollectionId(int collectionId) {
+        this.collectionId = collectionId;
     }
 }
