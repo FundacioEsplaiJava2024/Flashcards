@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.GridLayout;
@@ -13,6 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.esplai.flashcards.R;
 import com.esplai.flashcards.network.ApiCliente;
@@ -27,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CollectionsActivity extends AppCompatActivity {
+public class RandomCollectionsActivity extends AppCompatActivity {
     private boolean isLoadingCollections = false;
     private GridLayout collectionsContainer;
     private List<Collection> collectionList = new ArrayList<>();
@@ -45,8 +50,10 @@ public class CollectionsActivity extends AppCompatActivity {
 
     //Método que realiza la petición al servidor y actualiza la interfaz con las colecciones recibidas
     private void getCollectionsFromServer() {
-        if (isLoadingCollections) return; //Evit llamadas múltiples
+        if (isLoadingCollections) return;
         isLoadingCollections = true;
+        collectionList.clear();
+        collectionsContainer.removeAllViews();
 
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
 
@@ -55,7 +62,7 @@ public class CollectionsActivity extends AppCompatActivity {
         String token = sharedPreferences.getString("token", null);
 
         if (token != null) {
-            Call<List<Collection>> call = apiService.getCollectionsFromUser("Bearer " + token);
+            Call<List<Collection>> call = apiService.getRandomCollections("Bearer " + token);
 
             call.enqueue(new Callback<List<Collection>>() {
                 @Override
@@ -70,15 +77,15 @@ public class CollectionsActivity extends AppCompatActivity {
                                 addCollectionView(collection);
                             }
                         } else {
-                            Toast.makeText(CollectionsActivity.this, "No se encontraron colecciones, prueba a crear o a guardar unas", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RandomCollectionsActivity.this, "No se encontraron colecciones", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         try {
-                            Log.e("Collections", "Error body: " + response.errorBody().string());
+                            Log.e("CollectionsRan", "Error body: " + response.errorBody().string());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(CollectionsActivity.this, "Error al recuperar las colecciones", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RandomCollectionsActivity.this, "Error al recuperar las colecciones", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -86,7 +93,7 @@ public class CollectionsActivity extends AppCompatActivity {
                 public void onFailure(Call<List<Collection>> call, Throwable t) {
                     isLoadingCollections = false;
                     Log.e("Collections", "Error: " + t.getMessage());
-                    Toast.makeText(CollectionsActivity.this, "Error al contactar con el servidor", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RandomCollectionsActivity.this, "Error al contactar con el servidor", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -118,7 +125,7 @@ public class CollectionsActivity extends AppCompatActivity {
         collectionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CollectionsActivity.this, CollectionDetailActivity.class);
+                Intent intent = new Intent(RandomCollectionsActivity.this, CollectionOthersDetailsActivity.class);
                 intent.putExtra("collectionId", collection.getId());
                 intent.putExtra("collectionTitle", collection.getTitle());
                 intent.putExtra("collectionDescription", collection.getDescription());
@@ -128,6 +135,57 @@ public class CollectionsActivity extends AppCompatActivity {
 
         collectionsContainer.addView(collectionView);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main2, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchCollections(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterCollections(newText);
+                return false;
+            }
+        });
+        MenuItem menuItem = menu.findItem(R.id.refresh);
+        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                getCollectionsFromServer();
+                return true;
+            }
+        });
+
+        return true;
+    }
+    //Método para filtrar la lista de colecciones mientras se escribe
+    private void filterCollections(String query) {
+        List<Collection> filteredList = new ArrayList<>();
+        for (Collection collection : collectionList) {
+            if (collection.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(collection);
+            }
+        }
+        collectionsContainer.removeAllViews();
+        for (Collection collection : filteredList) {
+            addCollectionView(collection);
+        }
+    }
+
+    //Método para manejar la búsqueda cuando se envía el texto
+    private void searchCollections(String query) {
+        filterCollections(query);
+    }
+
+
 
     private void addFooter(Bundle savedInstance) {
         getSupportFragmentManager()

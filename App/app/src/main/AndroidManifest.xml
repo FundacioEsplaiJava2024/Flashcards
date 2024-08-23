@@ -14,10 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FlashCards"
         tools:targetApi="34">
+
         <activity
-            android:name=".service.login.LoginActivity"
+            android:name=".ui.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.FlashCards.NoActionBar">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,11 +26,17 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".service.login.LoginActivity" android:theme="@style/Theme.FlashCards.NoActionBar"/>
         <activity android:name=".MainActivity"/>
         <activity android:name=".ui.CollectionsActivity"/>
         <activity android:name=".service.login.RegisterActivity" />
         <activity android:name=".service.collection.AddCollectionActivity"/>
         <activity android:name=".service.cardlogic.CreateCardActivity" />
+        <activity android:name=".ui.CollectionOthersDetailsActivity"/>
+        <activity android:name=".ui.CollectionDetailActivity"/>
+        <activity android:name=".ui.SavedCollectionsActivity"/>
+        <activity android:name=".ui.RandomCollectionsActivity"/>
+        <activity android:name=".service.login.RegisterActivity" android:theme="@style/Theme.FlashCards.NoActionBar"/>
     </application>
 
 </manifest>

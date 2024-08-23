@@ -27,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CollectionsActivity extends AppCompatActivity {
+public class SavedCollectionsActivity extends AppCompatActivity {
     private boolean isLoadingCollections = false;
     private GridLayout collectionsContainer;
     private List<Collection> collectionList = new ArrayList<>();
@@ -55,7 +55,7 @@ public class CollectionsActivity extends AppCompatActivity {
         String token = sharedPreferences.getString("token", null);
 
         if (token != null) {
-            Call<List<Collection>> call = apiService.getCollectionsFromUser("Bearer " + token);
+            Call<List<Collection>> call = apiService.getSavedCollections("Bearer " + token);
 
             call.enqueue(new Callback<List<Collection>>() {
                 @Override
@@ -70,7 +70,7 @@ public class CollectionsActivity extends AppCompatActivity {
                                 addCollectionView(collection);
                             }
                         } else {
-                            Toast.makeText(CollectionsActivity.this, "No se encontraron colecciones, prueba a crear o a guardar unas", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SavedCollectionsActivity.this, "No se encontraron colecciones, prueba a crear o a guardar unas", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         try {
@@ -78,7 +78,7 @@ public class CollectionsActivity extends AppCompatActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(CollectionsActivity.this, "Error al recuperar las colecciones", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SavedCollectionsActivity.this, "Error al recuperar las colecciones", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -86,7 +86,7 @@ public class CollectionsActivity extends AppCompatActivity {
                 public void onFailure(Call<List<Collection>> call, Throwable t) {
                     isLoadingCollections = false;
                     Log.e("Collections", "Error: " + t.getMessage());
-                    Toast.makeText(CollectionsActivity.this, "Error al contactar con el servidor", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SavedCollectionsActivity.this, "Error al contactar con el servidor", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -118,7 +118,7 @@ public class CollectionsActivity extends AppCompatActivity {
         collectionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CollectionsActivity.this, CollectionDetailActivity.class);
+                Intent intent = new Intent(SavedCollectionsActivity.this, CollectionDetailActivity.class);
                 intent.putExtra("collectionId", collection.getId());
                 intent.putExtra("collectionTitle", collection.getTitle());
                 intent.putExtra("collectionDescription", collection.getDescription());

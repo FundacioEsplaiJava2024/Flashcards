@@ -1,0 +1,9 @@
+<!-- res/menu/collection_others_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_button"
+        android:title="Action"
+        android:icon="@android:drawable/ic_menu_save"
+        app:showAsAction="ifRoom" />
+</menu>
