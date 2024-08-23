@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -74,7 +73,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     CardModel card = cardList.get(getAdapterPosition());
-                    if (card.getBackside() != null) {
+                    if (card.getBack() != null) {
                         flipCard(card);
                     }
                 }
@@ -94,6 +93,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             });
 
         }
+
 
          public void setData(CardModel cardModel) {
             text.setText(cardModel.getText());
@@ -130,10 +130,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                     //Cambiar el texto después de la primera parte de la animación
                     if (isShowingBackside) {
                         // Volver a mostrar la parte frontal
-                        text.setText(card.getText());
+                        text.setText(card.getFront());
                     } else {
                         // Mostrar la parte trasera
-                        text.setText(card.getBackside());
+                        text.setText(card.getBack());
                     }
                     //Alterna el estado
                     isShowingBackside = !isShowingBackside;
