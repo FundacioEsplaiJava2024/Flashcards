@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private List<CardModel> cardList;
     private ActivityMainBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
-    private boolean isLoadingMoreCards = false; // Para controlar las solicitudes simultáneas
+    private boolean isLoadingMoreCards = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
 
-        //Se recupera el token del user
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("token", null);
 
@@ -156,13 +155,12 @@ public class MainActivity extends AppCompatActivity {
             call.enqueue(new Callback<List<CardModel>>() {
                 @Override
                 public void onResponse(Call<List<CardModel>> call, Response<List<CardModel>> response) {
-                    isLoadingMoreCards = false; // Restablecer el estado de carga
-
+                    isLoadingMoreCards = false;
                     if (response.isSuccessful()) {
                         List<CardModel> cards = response.body();
                         if (cards != null && !cards.isEmpty()) {
-                            cardList.addAll(cards); // Agregar más cartas a la lista
-                            adapter.notifyDataSetChanged(); // Notificar al adaptador
+                            cardList.addAll(cards);
+                            adapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(MainActivity.this, "No se encontraron más cartas", Toast.LENGTH_SHORT).show();
                         }
@@ -200,14 +198,12 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Perform search when the search button is pressed
                 searchHashtag(query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // You can handle text changes here if needed
                 return false;
             }
         });
@@ -232,14 +228,14 @@ public class MainActivity extends AppCompatActivity {
             call.enqueue(new Callback<List<CardModel>>() {
                 @Override
                 public void onResponse(Call<List<CardModel>> call, Response<List<CardModel>> response) {
-                    isLoadingMoreCards = false; // Reset loading state
+                    isLoadingMoreCards = false;
 
                     if (response.isSuccessful()) {
                         List<CardModel> cards = response.body();
                         if (cards != null && !cards.isEmpty()) {
-                            cardList.clear(); // Clear the current list
-                            cardList.addAll(cards); // Add the searched cards
-                            adapter.notifyDataSetChanged(); // Notify the adapter
+                            cardList.clear();
+                            cardList.addAll(cards);
+                            adapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(MainActivity.this, "No se han encontrado tarjetas para este hashtag", Toast.LENGTH_SHORT).show();
                         }
