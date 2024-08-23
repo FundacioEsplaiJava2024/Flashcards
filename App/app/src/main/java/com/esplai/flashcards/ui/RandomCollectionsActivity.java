@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.esplai.flashcards.R;
 import com.esplai.flashcards.network.ApiCliente;
@@ -51,6 +53,7 @@ public class RandomCollectionsActivity extends AppCompatActivity {
         if (isLoadingCollections) return;
         isLoadingCollections = true;
         collectionList.clear();
+        collectionsContainer.removeAllViews();
 
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
 
@@ -134,7 +137,7 @@ public class RandomCollectionsActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main2, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
@@ -150,6 +153,14 @@ public class RandomCollectionsActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 filterCollections(newText);
                 return false;
+            }
+        });
+        MenuItem menuItem = menu.findItem(R.id.refresh);
+        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                getCollectionsFromServer();
+                return true;
             }
         });
 
