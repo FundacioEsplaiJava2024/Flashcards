@@ -3,6 +3,7 @@ package com.esplai.flashcards.service.cardlogic;
 public class CardModel {
     private String text, backside;
     private Boolean isLiked = false;
+    private int id;
 
     public CardModel() {
 
@@ -12,9 +13,10 @@ public class CardModel {
         this.text = text;
     }
 
-    public CardModel(String text, Boolean isLiked) {
+    public CardModel(String text, Boolean isLiked, int id) {
         this.text = text;
         this.isLiked = isLiked;
+        this.id = id;
     }
 
     public CardModel(String text, String backside, Boolean isLiked) {
@@ -45,5 +47,9 @@ public class CardModel {
 
     public void setLiked(Boolean liked) {
         isLiked = liked;
+    }
+
+    public int getId() {
+        return id;
     }
 }

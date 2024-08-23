@@ -10,14 +10,26 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.esplai.flashcards.R;
+import com.esplai.flashcards.model.Card;
+import com.esplai.flashcards.network.ApiCliente;
+import com.esplai.flashcards.network.ApiService;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
+//import okhttp3.Response;
+import retrofit2.Call;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -84,18 +96,44 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     CardModel card = cardList.get(getAdapterPosition());
-                    card.setLiked(!card.getLiked());
-                    if (card.getLiked()) {
+                    boolean newLikeStatus = !card.getLiked();
+                    card.setLiked(newLikeStatus);
+
+                    // Actualizar la interfaz de usuario
+                    if (newLikeStatus) {
                         ivHeart.setColorFilter(Color.RED);
                     } else {
                         ivHeart.setColorFilter(Color.GRAY);
                     }
+
+                    // Enviar la solicitud de actualización de "like"
+                    updateLikes(card.getId(), newLikeStatus);
                 }
             });
+        }
+        private void updateLikes(int cardId, boolean isLiked) {
+            ApiService apiService = ApiCliente.getClient().create(ApiService.class);
+            Call<Card> call = apiService.likeCard(cardId, isLiked);
 
+            call.enqueue(new Callback<Card>() {
+                @Override
+                public void onResponse(Call<Card> call, Response<Card> response) {
+                    if (response.isSuccessful()) {
+
+                    } else {
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Card> call, Throwable t) {
+                    // Manejar la falla aquí
+                }
+            });
         }
 
-         public void setData(CardModel cardModel) {
+
+
+        public void setData(CardModel cardModel) {
             text.setText(cardModel.getText());
             backgroundLayout.setBackgroundColor(getNewBackgroundColor());
 
