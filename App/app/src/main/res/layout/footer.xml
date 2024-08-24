@@ -32,7 +32,7 @@
         android:id="@+id/fabF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/homeButton"
+        android:backgroundTint="@color/error"
         android:src="@drawable/home"
         app:backgroundTint="@color/purple_200"
         app:fabSize="mini"
