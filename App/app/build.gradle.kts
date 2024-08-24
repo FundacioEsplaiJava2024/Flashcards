@@ -35,6 +35,8 @@ android {
 }
 
 dependencies {
+
+    implementation("com.github.yuyakaido:CardStackView:v2.3.4")
     implementation(libs.recyclerview)
     implementation(libs.material.v100)
 

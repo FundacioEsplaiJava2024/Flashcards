@@ -3,7 +3,6 @@ package com.esplai.flashcards.network;
 
 import com.esplai.flashcards.model.AccesToken;
 import com.esplai.flashcards.model.Card;
-import com.esplai.flashcards.model.Collection;
 import com.esplai.flashcards.model.LoginUser;
 import com.esplai.flashcards.model.User;
 import com.esplai.flashcards.service.cardlogic.CardModel;
@@ -15,6 +14,7 @@ import java.util.List;
 import retrofit2.Call;
 
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -40,6 +40,20 @@ public interface ApiService {
 
     @POST("/cards/{id}/like")
     Call<Card> likeCard(@Path("id") int cardId, @Query("isLiked") boolean isLiked);
+
+    @POST("path/to/your/endpoint")
+    <CardRequest> // Reemplaza con la ruta correcta de tu API
+    Call<Void> createCard(
+            @Header("Authorization") String authorization,
+            @Body CardRequest cardRequest
+    );
+
+    @POST("path/to/your/collection/endpoint")
+    <CollectionRequest> // Reemplaza con la ruta correcta de tu API
+    Call<Void> createCollection(
+            @Header("Authorization") String authorization,
+            @Body CollectionRequest collectionRequest
+    );
 
 
 }

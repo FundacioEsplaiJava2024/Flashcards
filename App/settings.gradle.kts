@@ -11,18 +11,18 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        maven{
+        maven {
             setUrl("https://jitpack.io")
         }
-        jcenter()
+        // Nota: jcenter() ha sido descontinuado, se recomienda eliminarlo o usar alternativas.
     }
 }
 
 rootProject.name = "FlashCards"
 include(":app")
- 
