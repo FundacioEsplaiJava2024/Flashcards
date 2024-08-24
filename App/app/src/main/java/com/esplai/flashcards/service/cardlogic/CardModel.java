@@ -1,60 +1,36 @@
 package com.esplai.flashcards.service.cardlogic;
 
+import com.google.gson.annotations.SerializedName;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class CardModel {
-    private String front, back, username, collection_title;
-    private Boolean favourite = false;
-    private LocalDateTime createdAt;
-    private List<String> hashtags;
+    private String front;
+
+    @SerializedName("backside")
+    private String back;
+
+    @SerializedName("collection_id")
     private int collectionId;
 
+    private List<String> hashtags;
 
-    public CardModel() {
+    private Boolean favourite = false;
+    private LocalDateTime createdAt;
+    private String collection_title;
+    private String username;
 
-    }
+    // Constructores
+    public CardModel() {}
 
-    public CardModel(String front) {
-        this.front = front;
-    }
-
-    public CardModel(String front, Boolean favourite) {
-        this.front = front;
-        this.favourite = favourite;
-    }
-
-    public CardModel(String front, String back, Boolean favourite, LocalDateTime createdAt, String collection_title, String username) {
-        this.front = front;
-        this.back = back;
-        this.favourite = favourite;
-        this.createdAt = createdAt;
-        this.collection_title = collection_title;
-        this.username = username;
-    }
-    public CardModel(String front, String back, Boolean favourite, LocalDateTime createdAt, List<String> hashtags,String collection_title, String username) {
-        this.front = front;
-        this.back = back;
-        this.favourite = favourite;
-        this.createdAt = createdAt;
-        this.hashtags = hashtags;
-        this.collection_title = collection_title;
-        this.username = username;
-    }
-
-    public CardModel(String front, String back, Boolean favourite) {
-        this.front = front;
-        this.back = back;
-        this.favourite = favourite;
-    }
-
-    public <T> CardModel(String front, String back, int collectionId, List<String> ts) {
+    public CardModel(String front, String back, int collectionId, List<String> hashtags) {
         this.front = front;
         this.back = back;
         this.collectionId = collectionId;
-        this.hashtags = ts;
+        this.hashtags = hashtags;
     }
 
+    // Getters y Setters
     public String getFront() {
         return front;
     }
@@ -71,20 +47,12 @@ public class CardModel {
         this.back = back;
     }
 
-    public Boolean getLiked() {
-        return favourite;
+    public int getCollectionId() {
+        return collectionId;
     }
 
-    public void setLiked(Boolean liked) {
-        favourite = liked;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setCollectionId(int collectionId) {
+        this.collectionId = collectionId;
     }
 
     public List<String> getHashtags() {
@@ -95,11 +63,45 @@ public class CardModel {
         this.hashtags = hashtags;
     }
 
-    public int getCollectionId() {
-        return collectionId;
+    public Boolean getFavourite() {
+        return favourite;
     }
 
-    public void setCollectionId(int collectionId) {
-        this.collectionId = collectionId;
+    public void setFavourite(Boolean favourite) {
+        this.favourite = favourite;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCollectionTitle() {
+        return collection_title;
+    }
+
+    public void setCollectionTitle(String collection_title) {
+        this.collection_title = collection_title;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Boolean getLiked() {
+        return favourite;
+    }
+
+
+    public void setLiked(Boolean liked) {
+        favourite = liked;
+    }
+
 }
