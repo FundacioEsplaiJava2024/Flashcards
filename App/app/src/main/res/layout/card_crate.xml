@@ -1,40 +1,43 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    android:background="@drawable/gradient">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"
         android:scaleType="centerInside"
         android:src="@drawable/album_colored"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="30dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="30dp" />
 
     <!--    CARD NAME-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="180dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvFront"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:layout_marginStart="130dp"
+            android:layout_marginBottom="5dp"
             android:fontFamily="@font/exo_2_semibold"
-            android:text="NAME OF A CARD"
+            android:text="TEXT FORNT CARD"
             android:textColor="@color/cardview_dark_background"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -51,24 +54,23 @@
             android:textAlignment="textStart"
             android:textColor="#F9F9F9"
             android:textSize="15sp" />
-
     </LinearLayout>
 
     <!--    TEXT OF A CARD-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="260dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvBackside"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginStart="170dp"
             android:fontFamily="@font/exo_2_semibold"
-            android:text="TEXT"
+            android:text="TEXT BACK CARD"
             android:textColor="@color/cardview_dark_background"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -84,8 +86,11 @@
             android:singleLine="true"
             android:textAlignment="textStart"
             android:textColor="#F9F9F9"
-            android:textSize="35sp"/>
+            android:textSize="25sp" />
     </LinearLayout>
+
+
+
 
     <!-- HASHTAG ## !-->
 
@@ -93,14 +98,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="360dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvHashtag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="160dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginStart="40dp"
             android:fontFamily="@font/exo_2_semibold"
             android:text="HASHTAG"
             android:textColor="@color/cardview_dark_background"
@@ -111,8 +116,8 @@
             android:id="@+id/etHashtag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
             android:background="@drawable/noborderedittext"
             android:fontFamily="@font/exo_2"
             android:singleLine="true"
@@ -120,72 +125,90 @@
             android:textColor="#F9F9F9"
             android:textSize="10sp" />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="410dp"
-        android:orientation="horizontal">
-        <Spinner
-            android:id="@+id/etCollectionId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="30dp"
-            android:spinnerMode="dropdown"
-            android:padding="10dp"
-            android:textColor="#000000"
-            android:background="@android:drawable/btn_dropdown"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
 
-
-        ></LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="440dp"
         android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/etCollectionId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:padding="10dp"
+            android:spinnerMode="dropdown"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="500dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- Botón Create Card -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btCreateCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:background="@drawable/borderedittext"
+            android:minWidth="200dp"
+            android:padding="12dp"
             android:text="Create Card"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:padding="12dp"
-            android:minWidth="200dp"
-            app:layout_constraintTop_toBottomOf="@id/etCollectionId"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/borderedittext"/>
+            android:textStyle="bold" />
+
+        <!-- Botón Create Collection -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btCreateColecction"
+            android:id="@+id/btCreateCollection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Create Colection"
+            android:background="@drawable/borderedittext"
+            android:minWidth="200dp"
+            android:padding="12dp"
+            android:text="Create Collection"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:padding="12dp"
-            android:minWidth="200dp"
-            app:layout_constraintTop_toBottomOf="@id/etCollectionId"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/borderedittext"/>
-        ></LinearLayout>
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/footer"
         android:layout_width="0dp"
-        android:elevation="8dp"
         android:layout_height="95dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="411dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="411dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
