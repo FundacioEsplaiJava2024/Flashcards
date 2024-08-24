@@ -156,16 +156,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/exo_2_semibold"
-                android:text="CONTRASEÑA NO COMPATIBLE"
+                android:text="Las contraseñas no son idénticas"
                 android:textAlignment="center"
-                android:textColor="#DC4759"
+                android:textColor="@color/error"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btCreate"
-                android:layout_width="175dp"
-                android:layout_height="40dp"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:background="@drawable/borderedittext"
                 android:fontFamily="@font/exo_2_semibold"
