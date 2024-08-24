@@ -9,5 +9,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="footer">#a3c3d9</color>
     <color name="homeButton">#e85f5c</color>
+    <color name="background_color">#f5f5f5</color>
+    <color name="primary_text_color">#1b2631</color>
+    <color name="accent_color">#304FFE</color>
+    <color name="gray">#B0BEC5</color>
 
 </resources>
