@@ -15,6 +15,6 @@
     <color name="gray">#B0BEC5</color>
     <color name="header_background">#283747</color>
     <color name="footer_background">#1C2833</color>
-
+    <color name="error">#BD110E</color>
 
 </resources>

@@ -106,7 +106,7 @@
                 android:fontFamily="@font/exo_2_semibold"
                 android:text="CREDENCIALES INCORRECTAS"
                 android:textAlignment="center"
-                android:textColor="#DC4759"
+                android:textColor="@color/error"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -148,7 +148,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
-
 
     </LinearLayout>
 
