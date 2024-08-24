@@ -13,5 +13,8 @@
     <color name="primary_text_color">#1b2631</color>
     <color name="accent_color">#304FFE</color>
     <color name="gray">#B0BEC5</color>
+    <color name="header_background">#283747</color>
+    <color name="footer_background">#1C2833</color>
+
 
 </resources>
