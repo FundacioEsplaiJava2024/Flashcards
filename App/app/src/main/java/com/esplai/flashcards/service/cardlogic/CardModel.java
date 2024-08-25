@@ -102,4 +102,18 @@ public class CardModel {
     public void setCollectionId(int collectionId) {
         this.collectionId = collectionId;
     }
+
+    @Override
+    public String toString() {
+        return "CardModel{" +
+                "front='" + front + '\'' +
+                ", back='" + back + '\'' +
+                ", username='" + username + '\'' +
+                ", collection_title='" + collection_title + '\'' +
+                ", favourite=" + favourite +
+                ", createdAt=" + createdAt +
+                ", hashtags=" + hashtags +
+                ", collectionId=" + collectionId +
+                '}';
+    }
 }

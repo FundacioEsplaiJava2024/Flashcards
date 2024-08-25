@@ -49,7 +49,7 @@ public class CreateCardActivity extends AppCompatActivity {
         etCollectionId = findViewById(R.id.etCollectionId);
         etHashtag = findViewById(R.id.etHashtag);
         btCreateCard = findViewById(R.id.btCreateCard);
-        btCreateColecction = findViewById(R.id.btCreateColecction);
+        btCreateColecction = findViewById(R.id.btCreateCollection);
 
         apiService = ApiCliente.getClient().create(ApiService.class);
 
