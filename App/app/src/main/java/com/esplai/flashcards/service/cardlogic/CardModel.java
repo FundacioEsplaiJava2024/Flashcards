@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class CardModel {
+    private int id;
     private String front;
 
     @SerializedName("backside")
@@ -20,7 +21,6 @@ public class CardModel {
     private String collection_title;
     private String username;
 
-    // Constructores
     public CardModel() {}
 
     public CardModel(String front, String back, int collectionId, List<String> hashtags) {
@@ -30,7 +30,14 @@ public class CardModel {
         this.hashtags = hashtags;
     }
 
-    // Getters y Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getFront() {
         return front;
     }
@@ -99,9 +106,7 @@ public class CardModel {
         return favourite;
     }
 
-
     public void setLiked(Boolean liked) {
         favourite = liked;
     }
-
 }

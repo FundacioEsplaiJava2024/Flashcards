@@ -9,14 +9,21 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.esplai.flashcards.R;
+import com.esplai.flashcards.network.ApiCliente;
+import com.esplai.flashcards.network.ApiService;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
@@ -29,9 +36,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             Color.rgb(201, 177, 189)
     );
     private static int backgroundColorIndex = 0;
+    private final ApiService apiService;
+    private final String token;  // Nuevo campo para almacenar el token
 
-    public CardAdapter(List<CardModel> cardList) {
+    public CardAdapter(List<CardModel> cardList, String token) { // Modificar constructor
         this.cardList = cardList;
+        this.apiService = ApiCliente.getClient().create(ApiService.class);
+        this.token = token;
     }
 
     @NonNull
@@ -60,14 +71,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView text;
         ConstraintLayout backgroundLayout;
-        ImageView ivHeart;
-        boolean isShowingBackside = false; // Estado inicial mostrando la cara frontal
+        ImageView ivHeart, btDelete;
+        boolean isShowingBackside = false;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.tvCardText);
             backgroundLayout = itemView.findViewById(R.id.cdCard);
             ivHeart = itemView.findViewById(R.id.ivHeart);
+            btDelete = itemView.findViewById(R.id.btdelete);
 
             backgroundLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -87,6 +99,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                     notifyItemChanged(getAdapterPosition());
                 }
             });
+
+            btDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    CardModel card = cardList.get(position);
+                    deleteCard(card.getId(), position);
+                }
+            });
         }
 
         public void setData(CardModel cardModel) {
@@ -99,54 +120,62 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 ivHeart.setColorFilter(Color.GRAY);
             }
 
-            // Resetear el estado para mostrar la cara frontal cuando se vincule la tarjeta
             isShowingBackside = false;
         }
 
         private void flipCard(CardModel card) {
-            //Primera parte del flip
             ObjectAnimator flipOutAnimator = ObjectAnimator.ofFloat(backgroundLayout, "rotationY", 0f, 90f);
             flipOutAnimator.setDuration(250);
             flipOutAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
 
-            //Segunda parte del flip
             ObjectAnimator flipInAnimator = ObjectAnimator.ofFloat(backgroundLayout, "rotationY", -90f, 0f);
             flipInAnimator.setDuration(250);
             flipInAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
 
             flipOutAnimator.addListener(new Animator.AnimatorListener() {
                 @Override
-                public void onAnimationStart(Animator animation) {
-                }
+                public void onAnimationStart(Animator animation) {}
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    //Cambiar el texto después de la primera parte de la animación
                     if (isShowingBackside) {
-                        // Volver a mostrar la parte frontal
                         text.setText(card.getFront());
                     } else {
-                        // Mostrar la parte trasera
                         text.setText(card.getBack());
                     }
-                    //Alterna el estado
                     isShowingBackside = !isShowingBackside;
-
-                    //Inicia la segunda parte de la animación
                     flipInAnimator.start();
                 }
 
                 @Override
-                public void onAnimationCancel(Animator animation) {
-                }
+                public void onAnimationCancel(Animator animation) {}
 
                 @Override
-                public void onAnimationRepeat(Animator animation) {
-                }
+                public void onAnimationRepeat(Animator animation) {}
             });
             flipOutAnimator.start();
         }
 
-    }
+        private void deleteCard(int cardId, int position) {
+            apiService.deleteCard(cardId, "Bearer " + token)  // Utilizar el token
 
+                    .enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                cardList.remove(position);
+                                notifyItemRemoved(position);
+                                Toast.makeText(itemView.getContext(), "Carta eliminada con éxito", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(itemView.getContext(), "Fallo en eliminar la carta", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(itemView.getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
 }

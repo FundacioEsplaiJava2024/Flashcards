@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Method to handle hashtag search
-    private void searchHashtag(String hashtag) {
+    public void searchHashtag(String hashtag) {
         if (isLoadingMoreCards) return; // Avoid multiple requests
         isLoadingMoreCards = true;
 
