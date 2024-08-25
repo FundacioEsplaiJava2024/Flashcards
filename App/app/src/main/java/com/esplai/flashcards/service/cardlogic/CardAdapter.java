@@ -2,6 +2,8 @@ package com.esplai.flashcards.service.cardlogic;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,13 +22,10 @@ import com.esplai.flashcards.network.ApiService;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     private final List<CardModel> cardList;
+    private String currentUsername;
     private static final List<Integer> BACKGROUND_COLORS = List.of(
             Color.rgb(146, 188, 234),
             Color.rgb(226, 194, 255),
@@ -37,12 +35,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     );
     private static int backgroundColorIndex = 0;
     private final ApiService apiService;
-    private final String token;  // Nuevo campo para almacenar el token
 
-    public CardAdapter(List<CardModel> cardList, String token) { // Modificar constructor
+    public CardAdapter(List<CardModel> cardList) {
         this.cardList = cardList;
         this.apiService = ApiCliente.getClient().create(ApiService.class);
-        this.token = token;
     }
 
     @NonNull
@@ -103,9 +99,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             btDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    CardModel card = cardList.get(position);
-                    deleteCard(card.getId(), position);
+                    // Implement delete functionality here if needed
                 }
             });
         }
@@ -114,6 +108,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             text.setText(cardModel.getFront());
             backgroundLayout.setBackgroundColor(getNewBackgroundColor());
 
+            //si el user no es igual no salga el delete
+            if (cardModel.getUsername().equals(currentUsername)) {
+                btDelete.setVisibility(View.VISIBLE);
+            } else {
+                btDelete.setVisibility(View.INVISIBLE);
+            }
             if (cardModel.getLiked()) {
                 ivHeart.setColorFilter(Color.RED);
             } else {
@@ -156,26 +156,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             flipOutAnimator.start();
         }
 
-        private void deleteCard(int cardId, int position) {
-            apiService.deleteCard(cardId, "Bearer " + token)  // Utilizar el token
-
-                    .enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                cardList.remove(position);
-                                notifyItemRemoved(position);
-                                Toast.makeText(itemView.getContext(), "Carta eliminada con éxito", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(itemView.getContext(), "Fallo en eliminar la carta", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(itemView.getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+        private void deleteCard() {
+            // Add delete card functionality here if needed
         }
     }
 }

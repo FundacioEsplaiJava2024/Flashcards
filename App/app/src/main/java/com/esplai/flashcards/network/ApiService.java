@@ -55,8 +55,7 @@ public interface ApiService {
     @GET("/flashcards/collection/saved")
     Call <List<Collection>>getSavedCollections(@Header("Authorization")String token);
 
-    @DELETE("flashcards/card/{id}")
+    @DELETE("/flashcards/card/{id}")
     Call<Void> deleteCard(@Path("id") int id, @Header("Authorization") String token);
-
 
 }

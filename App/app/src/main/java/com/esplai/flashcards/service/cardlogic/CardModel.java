@@ -21,6 +21,18 @@ public class CardModel {
     private String collection_title;
     private String username;
 
+    private int user_id;
+
+    // Add getter and setter methods for user_id
+    public int getUserId() {
+        return user_id;
+    }
+
+    public void setUserId(int user_id) {
+        this.user_id = user_id;
+    }
+
+
     public CardModel() {}
 
     public CardModel(String front, String back, int collectionId, List<String> hashtags) {
