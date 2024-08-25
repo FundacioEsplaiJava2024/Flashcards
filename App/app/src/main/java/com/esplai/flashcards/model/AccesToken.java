@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class AccesToken {
     @SerializedName("token")
-    private String token;
-    public String getToken() {
+    private static String token;
+    public static String getToken() {
         return token;
     }
 
