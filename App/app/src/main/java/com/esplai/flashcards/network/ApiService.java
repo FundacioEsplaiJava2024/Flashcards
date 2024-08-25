@@ -39,6 +39,8 @@ public interface ApiService {
     @GET("flashcards/card/hashtag")
     Call<List<CardModel>> getCardsByHashtag(@Header("Authorization") String token, @Query("hashtag") String hashtag);
 
+    @DELETE("/flashcards/card/{id}")
+    Call<String>deleteCard(@Header("Authorization")String token,@Path("id")int id);
 
     @GET("/flashcards/collection")
     Call <List<Collection>>getCollectionsFromUser(@Header("Authorization")String token);

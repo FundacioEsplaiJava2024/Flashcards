@@ -96,9 +96,9 @@ public class LoginActivity extends AppCompatActivity {
         };
     }
 
-    private void loginUser(String username, String password) {
+    private void loginUser(String email, String password) {
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
-        LoginUser loginUser = new LoginUser(username, password);
+        LoginUser loginUser = new LoginUser(email, password);
 
         Call<AccesToken> call = apiService.loginUser(loginUser);
         call.enqueue(new Callback<AccesToken>() {
@@ -106,11 +106,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<AccesToken> call, Response<AccesToken> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().getToken();
+                    String username = response.body().getUsername();
 
                     // Guardar el token en SharedPreferences
                     SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("token", token);
+                    editor.putString("username",username);
                     editor.apply();
 
                     // Mostrar mensaje de éxito y abrir la pantalla principal

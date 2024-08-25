@@ -2,25 +2,38 @@ package com.esplai.flashcards.service.cardlogic;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.esplai.flashcards.R;
+import com.esplai.flashcards.network.ApiCliente;
+import com.esplai.flashcards.network.ApiService;
+import com.esplai.flashcards.ui.CollectionDetailActivity;
 
+import java.io.IOException;
 import java.util.List;
 
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    private final List<CardModel> cardList;
+public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
+    private List<CardModel> cardList = null;
+    private String actualUsername = getUsername();
+    private Context context;
     private static final List<Integer> BACKGROUND_COLORS = List.of(
             Color.rgb(146, 188, 234),
             Color.rgb(226, 194, 255),
@@ -32,6 +45,27 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     public CardAdapter(List<CardModel> cardList) {
         this.cardList = cardList;
+    }
+
+    public CardAdapter(List<CardModel> cardList, Context context) {
+        this.cardList = cardList;
+        this.context = context;
+    }
+
+    private String getUsername() {
+        Context context = AppContext.getContext();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", null);
+        return username;
+    }
+    private String getToken() {
+        Context context = AppContext.getContext();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", null);
+        return token;
+    }
+
+    public CardAdapter() {
     }
 
     @NonNull
@@ -60,7 +94,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView text;
         ConstraintLayout backgroundLayout;
-        ImageView ivHeart;
+        ImageView ivHeart, ivDelete;
         boolean isShowingBackside = false; // Estado inicial mostrando la cara frontal
 
         ViewHolder(@NonNull View itemView) {
@@ -68,6 +102,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             text = itemView.findViewById(R.id.tvCardText);
             backgroundLayout = itemView.findViewById(R.id.cdCard);
             ivHeart = itemView.findViewById(R.id.ivHeart);
+            ivDelete = itemView.findViewById(R.id.ivDelete);
 
             backgroundLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -87,12 +122,23 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                     notifyItemChanged(getAdapterPosition());
                 }
             });
+            ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CardModel card = cardList.get(getAdapterPosition());
+                    deleteCard(card.getId());
+                }
+            });
         }
 
         public void setData(CardModel cardModel) {
             text.setText(cardModel.getFront());
             backgroundLayout.setBackgroundColor(getNewBackgroundColor());
-
+            if (cardModel.getUsername().equals(actualUsername)) {
+                ivDelete.setVisibility(View.VISIBLE);
+            } else {
+                ivDelete.setVisibility(View.INVISIBLE);
+            }
             if (cardModel.getLiked()) {
                 ivHeart.setColorFilter(Color.RED);
             } else {
@@ -148,5 +194,58 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         }
 
     }
+    public void deleteCard(int id) {
+        //TODO: ARREGLARLO MAÑANA
+        ApiService apiService = ApiCliente.getClient().create(ApiService.class);
+        String token = getToken();
+
+        if (token != null) {
+            Call<String> call = apiService.deleteCard("Bearer " + token, id);
+
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()) {
+                        String cardsResponse = response.body();
+                        if (cardsResponse.equals("Card with ID "+id+" was deleted successfully")) {
+                            int positionToRemove = -1;
+                            for (int i = 0; i < cardList.size(); i++) {
+                                if (cardList.get(i).getId() == id) {
+                                    positionToRemove = i;
+                                    break;
+                                }
+                            }
+                            if (positionToRemove != -1) {
+                                // Eliminar la carta de la lista y notificar al adaptador
+                                cardList.remove(positionToRemove);
+                                notifyItemRemoved(positionToRemove);
+                                notifyItemRangeChanged(positionToRemove, cardList.size());
+                                Toast.makeText(context, "Carta eliminada correctamente", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, "No se encontró la carta para eliminar", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(context, "No se encontraron cartas en esta colección, prueba a añadirlas", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        try {
+                            Log.e("CardsError", "Error body: " + response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(context, "Error al recuperar las cartas", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast.makeText(context, "Error al contactar con el servidor", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(context, "No se encontró el token", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }
