@@ -16,13 +16,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.esplai.flashcards.R;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
-import com.esplai.flashcards.service.entities.Collection;
+import com.esplai.flashcards.model.entities.Collection;
 
 import java.io.IOException;
 import java.util.ArrayList;

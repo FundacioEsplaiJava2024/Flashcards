@@ -17,7 +17,7 @@ import com.esplai.flashcards.R;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.collection.AddCollectionActivity;
-import com.esplai.flashcards.service.entities.Collection;
+import com.esplai.flashcards.model.entities.Collection;
 import com.esplai.flashcards.ui.Footer;
 
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class CreateCardActivity extends AppCompatActivity {
     private EditText etBackside;
     private Spinner etCollectionId;
     private EditText etHashtag;
-    private Button btCreateCard, btCreateColecction;
+    private Button btCreateCard;
     private ApiService apiService;
     private List<Collection> collectionList;
 
@@ -49,7 +49,6 @@ public class CreateCardActivity extends AppCompatActivity {
         etCollectionId = findViewById(R.id.etCollectionId);
         etHashtag = findViewById(R.id.etHashtag);
         btCreateCard = findViewById(R.id.btCreateCard);
-        btCreateColecction = findViewById(R.id.btCreateCollection);
 
         apiService = ApiCliente.getClient().create(ApiService.class);
 
@@ -59,14 +58,6 @@ public class CreateCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 createCard();
-            }
-        });
-
-        btCreateColecction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CreateCardActivity.this, AddCollectionActivity.class);
-                startActivity(intent);
             }
         });
     }

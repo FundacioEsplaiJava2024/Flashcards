@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         addFooter(savedInstanceState);
 
         cardList = new ArrayList<>();
-        adapter = new CardAdapter(cardList);
+        adapter = new CardAdapter(cardList, this);
 
         CardStackView cardStackView = findViewById(R.id.card_stack_view);
         manager = new CardStackLayoutManager(this, new CardStackListener() {

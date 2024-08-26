@@ -3,6 +3,7 @@ package com.esplai.flashcards.service.cardlogic;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
@@ -43,10 +44,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             Color.rgb(201, 177, 189)
     );
     private static int backgroundColorIndex = 0;
-
-    public CardAdapter(List<CardModel> cardList) {
-        this.cardList = cardList;
-    }
 
     public CardAdapter(List<CardModel> cardList, Context context) {
         this.cardList = cardList;
@@ -92,7 +89,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView text;
         ConstraintLayout backgroundLayout;
-        ImageView ivHeart, ivDelete;
+        ImageView ivHeart, ivDelete, ivShare;
         boolean isShowingBackside = false; // Estado inicial mostrando la cara frontal
 
         ViewHolder(@NonNull View itemView) {
@@ -101,6 +98,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             backgroundLayout = itemView.findViewById(R.id.cdCard);
             ivHeart = itemView.findViewById(R.id.ivHeart);
             ivDelete = itemView.findViewById(R.id.ivDelete);
+            ivShare = itemView.findViewById(R.id.ivShare);
 
             backgroundLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -126,6 +124,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                         ivHeart.setColorFilter(Color.BLACK);
                     }
 
+                }
+            });
+            ivShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CardModel card = cardList.get(getAdapterPosition());
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_TITLE, card.getFront());
+                    context.startActivity(Intent.createChooser(intent,null));
                 }
             });
             ivDelete.setOnClickListener(new View.OnClickListener() {

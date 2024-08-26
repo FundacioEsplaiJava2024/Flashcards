@@ -18,7 +18,7 @@ import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.cardlogic.CardAdapter;
 import com.esplai.flashcards.service.cardlogic.CardModel;
-import com.esplai.flashcards.service.entities.Collection;
+import com.esplai.flashcards.model.entities.Collection;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class CollectionOthersDetailsActivity extends AppCompatActivity {
         collectionDescription = findViewById(R.id.tvCollectionDescription);
         cardsRecyclerView = findViewById(R.id.rvCardList);
 
-        cardAdapter = new CardAdapter(cardList);
+        cardAdapter = new CardAdapter(cardList,this);
         cardsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cardsRecyclerView.setAdapter(cardAdapter);
 

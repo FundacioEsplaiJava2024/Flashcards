@@ -40,7 +40,7 @@ public class Footer extends Fragment {
                         return true;
                     case R.id.nav_add_card:
                         Log.d("Footer", "Add Card button pressed");
-                        startActivity(new Intent(getActivity(), CreateCardActivity.class));
+                        startActivity(new Intent(getActivity(), AddActivity.class));
                         return true;
                     default:
                         return false;

@@ -8,7 +8,7 @@ import com.esplai.flashcards.model.LoginUser;
 import com.esplai.flashcards.model.User;
 import com.esplai.flashcards.service.cardlogic.CardModel;
 import com.esplai.flashcards.service.cardlogic.CrearCartaModel;
-import com.esplai.flashcards.service.entities.Collection;
+import com.esplai.flashcards.model.entities.Collection;
 
 
 import java.util.List;

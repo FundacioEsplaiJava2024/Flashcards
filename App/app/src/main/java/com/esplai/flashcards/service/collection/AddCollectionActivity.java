@@ -1,7 +1,5 @@
 package com.esplai.flashcards.service.collection;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,9 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.esplai.flashcards.R;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
-import com.esplai.flashcards.service.cardlogic.CreateCardActivity;
-import com.esplai.flashcards.service.entities.Collection;
-import com.esplai.flashcards.service.login.LoginActivity;
+import com.esplai.flashcards.model.entities.Collection;
 import com.esplai.flashcards.ui.Footer;
 
 import retrofit2.Call;

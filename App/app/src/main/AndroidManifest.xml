@@ -35,6 +35,7 @@
         <activity android:name=".ui.CollectionDetailActivity"/>
         <activity android:name=".ui.SavedCollectionsActivity"/>
         <activity android:name=".ui.RandomCollectionsActivity"/>
+        <activity android:name=".ui.AddActivity"/>
         <activity android:name=".service.login.RegisterActivity" android:theme="@style/Theme.FlashCards.NoActionBar"/>
     </application>
 
