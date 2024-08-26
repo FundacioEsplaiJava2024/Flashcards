@@ -129,18 +129,6 @@
                 android:minWidth="200dp"
                 android:layout_marginBottom="16dp"/>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btCreateCollection"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_button_background"
-                android:fontFamily="@font/exo_2_semibold"
-                android:text="Crear Colección"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:padding="14dp"
-                android:minWidth="200dp"/>
         </LinearLayout>
     </LinearLayout>
 

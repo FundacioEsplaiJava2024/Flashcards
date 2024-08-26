@@ -45,10 +45,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     );
     private static int backgroundColorIndex = 0;
 
-    public CardAdapter(List<CardModel> cardList) {
-        this.cardList = cardList;
-    }
-
     public CardAdapter(List<CardModel> cardList, Context context) {
         this.cardList = cardList;
         this.context = context;

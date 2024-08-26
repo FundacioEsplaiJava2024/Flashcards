@@ -46,7 +46,7 @@ public class CollectionOthersDetailsActivity extends AppCompatActivity {
         collectionDescription = findViewById(R.id.tvCollectionDescription);
         cardsRecyclerView = findViewById(R.id.rvCardList);
 
-        cardAdapter = new CardAdapter(cardList);
+        cardAdapter = new CardAdapter(cardList,this);
         cardsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cardsRecyclerView.setAdapter(cardAdapter);
 
