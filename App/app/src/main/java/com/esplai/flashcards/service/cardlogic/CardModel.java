@@ -8,10 +8,8 @@ public class CardModel {
     private int id;
     private String front;
 
-    @SerializedName("backside")
     private String back;
 
-    @SerializedName("collection_id")
     private int collectionId;
 
     private List<String> hashtags;
