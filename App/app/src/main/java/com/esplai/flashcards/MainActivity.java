@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
     private boolean isLoadingMoreCards = false;
+    private TextView tvUsername, tvEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +123,14 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+        View headerView = navigationView.getHeaderView(0);
+
+        tvUsername = headerView.findViewById(R.id.tvUsername);
+        tvEmail = headerView.findViewById(R.id.tvEmail);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        tvEmail.setText(sharedPreferences.getString("email", ""));
+        tvUsername.setText(sharedPreferences.getString("username", ""));
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_collections) //Añadir aquí las siguientes opciones del menú

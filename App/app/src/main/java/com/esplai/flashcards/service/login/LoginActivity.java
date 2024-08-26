@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("token", token);
                     editor.putString("username",username);
+                    editor.putString("email",email);
                     editor.apply();
 
                     // Mostrar mensaje de éxito y abrir la pantalla principal

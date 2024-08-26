@@ -65,9 +65,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         return token;
     }
 
-    public CardAdapter() {
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -118,8 +115,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     CardModel card = cardList.get(getAdapterPosition());
-                    card.setLiked(!card.getLiked());
-                    notifyItemChanged(getAdapterPosition());
+                    boolean newLikeStatus = !card.getLiked();
+                    card.setLiked(newLikeStatus);
+
+                    // Actualizar la interfaz de usuario
+                    if (newLikeStatus) {
+                        ivHeart.setColorFilter(Color.RED);
+                    } else {
+                        ivHeart.setColorFilter(Color.BLACK);
+                    }
+
                 }
             });
             ivDelete.setOnClickListener(new View.OnClickListener() {
@@ -139,12 +144,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             } else {
                 ivDelete.setVisibility(View.INVISIBLE);
             }
-            if (cardModel.getLiked()) {
-                ivHeart.setColorFilter(Color.RED);
-            } else {
-                ivHeart.setColorFilter(Color.GRAY);
-            }
-
             // Resetear el estado para mostrar la cara frontal cuando se vincule la tarjeta
             isShowingBackside = false;
         }
