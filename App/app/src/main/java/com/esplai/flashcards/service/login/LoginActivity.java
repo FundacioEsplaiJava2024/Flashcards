@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     try {
                         String errorBody = response.errorBody().string();
-                        tvError.setText("Error: " + errorBody);
+                        tvError.setText("Error: email o contraseña incorectos ");
                     } catch (Exception e) {
                         e.printStackTrace();
                         tvError.setText("Error desconocido. Intenta nuevamente.");
