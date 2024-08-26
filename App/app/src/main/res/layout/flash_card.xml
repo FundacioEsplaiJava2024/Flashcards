@@ -60,12 +60,12 @@
                 android:src="@drawable/share" />
 
             <ImageView
-                android:id="@+id/ivSound"
+                android:id="@+id/ivDelete"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="start"
                 android:layout_marginEnd="100dp"
-                android:src="@drawable/sonido" />
+                android:src="@drawable/papelera" />
 
             <ImageView
                 android:clickable="true"

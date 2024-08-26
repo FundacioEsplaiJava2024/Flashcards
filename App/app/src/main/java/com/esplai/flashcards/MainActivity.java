@@ -17,6 +17,7 @@ import com.esplai.flashcards.model.LoginUser;
 import com.esplai.flashcards.model.User;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
+import com.esplai.flashcards.service.cardlogic.AppContext;
 import com.esplai.flashcards.service.cardlogic.CardAdapter;
 import com.esplai.flashcards.service.cardlogic.CardModel;
 import com.esplai.flashcards.service.login.LoginActivity;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppContext.init(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         addFooter(savedInstanceState);

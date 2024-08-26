@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ public class CollectionDetailActivity extends AppCompatActivity {
         collectionDescription = findViewById(R.id.tvCollectionDescription);
         cardsRecyclerView = findViewById(R.id.rvCardList);
 
-        cardAdapter = new CardAdapter(cardList);
+        cardAdapter = new CardAdapter(cardList, this);
         cardsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cardsRecyclerView.setAdapter(cardAdapter);
 
@@ -110,4 +111,5 @@ public class CollectionDetailActivity extends AppCompatActivity {
                 .disallowAddToBackStack()
                 .commit();
     }
+
 }
