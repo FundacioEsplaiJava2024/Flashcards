@@ -18,7 +18,7 @@ import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.cardlogic.CardAdapter;
 import com.esplai.flashcards.service.cardlogic.CardModel;
-import com.esplai.flashcards.service.entities.Collection;
+import com.esplai.flashcards.model.entities.Collection;
 
 import java.io.IOException;
 import java.util.ArrayList;

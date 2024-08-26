@@ -17,7 +17,7 @@ import com.esplai.flashcards.R;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.service.collection.AddCollectionActivity;
-import com.esplai.flashcards.service.entities.Collection;
+import com.esplai.flashcards.model.entities.Collection;
 import com.esplai.flashcards.ui.Footer;
 
 import java.util.Collections;

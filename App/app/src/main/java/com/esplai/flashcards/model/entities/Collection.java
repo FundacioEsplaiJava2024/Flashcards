@@ -1,4 +1,4 @@
-package com.esplai.flashcards.service.entities;
+package com.esplai.flashcards.model.entities;
 
 import com.esplai.flashcards.service.cardlogic.CardModel;
 
