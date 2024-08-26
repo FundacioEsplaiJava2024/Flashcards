@@ -103,8 +103,6 @@ public class CreateCardActivity extends AppCompatActivity {
         });
     }
 
-
-
     private void createCard() {
         String front = etFront.getText().toString().trim();
         String backside = etBackside.getText().toString().trim();
@@ -130,7 +128,7 @@ public class CreateCardActivity extends AppCompatActivity {
             return;
         }
 
-        CardModel cardRequest = new CardModel(front, backside, collectionId, Collections.singletonList(hashtags));
+        CrearCartaModel cardRequest = new CrearCartaModel(front, backside, collectionId, Collections.singletonList(hashtags));
 
         // Hacer la solicitud de creación de la carta
         Call<Void> call = apiService.createCard("Bearer " + accessToken, cardRequest);
