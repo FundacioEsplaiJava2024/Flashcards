@@ -82,6 +82,8 @@ public class AddCollectionActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
             if (response.isSuccessful()) {
                 Toast.makeText(AddCollectionActivity.this, "Coleccion creada con éxito", Toast.LENGTH_SHORT).show();
+                etTitle.setText("");
+                etdescription.setText("");
             } else {
                 Toast.makeText(AddCollectionActivity.this, "No se pudo crear la Collecion", Toast.LENGTH_SHORT).show();
             }

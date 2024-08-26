@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.esplai.flashcards.R;
+import com.esplai.flashcards.model.DeleteMessage;
 import com.esplai.flashcards.network.ApiCliente;
 import com.esplai.flashcards.network.ApiService;
 import com.esplai.flashcards.ui.CollectionDetailActivity;
@@ -194,18 +195,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     }
     public void deleteCard(int id) {
-        //TODO: ARREGLARLO MAÑANA
         ApiService apiService = ApiCliente.getClient().create(ApiService.class);
         String token = getToken();
 
         if (token != null) {
-            Call<String> call = apiService.deleteCard("Bearer " + token, id);
+            Call<DeleteMessage> call = apiService.deleteCard("Bearer " + token, id);
 
-            call.enqueue(new Callback<String>() {
+            call.enqueue(new Callback<DeleteMessage>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(Call<DeleteMessage> call, Response<DeleteMessage> response) {
                     if (response.isSuccessful()) {
-                        String cardsResponse = response.body();
+                        String cardsResponse = response.body().getMessage();
                         if (cardsResponse.equals("Card with ID "+id+" was deleted successfully")) {
                             int positionToRemove = -1;
                             for (int i = 0; i < cardList.size(); i++) {
@@ -237,7 +237,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
+                public void onFailure(Call<DeleteMessage> call, Throwable t) {
                     Toast.makeText(context, "Error al contactar con el servidor", Toast.LENGTH_SHORT).show();
                 }
             });
