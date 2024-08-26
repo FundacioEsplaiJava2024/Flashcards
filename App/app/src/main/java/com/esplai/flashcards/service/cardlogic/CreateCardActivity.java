@@ -112,7 +112,7 @@ public class CreateCardActivity extends AppCompatActivity {
         // Verificar valores antes de la solicitud
         Log.d("CreateCardActivity", "Hashtags capturado: " + hashtags);
 
-        if (front.isEmpty() || backside.isEmpty() || selectedCollection == null || hashtags.isEmpty()) {
+        if (front.isEmpty() || selectedCollection == null || hashtags.isEmpty()) {
             Toast.makeText(this, "Por favor, rellene todos los campos.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -137,6 +137,9 @@ public class CreateCardActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(CreateCardActivity.this, "Tarjeta creada con éxito", Toast.LENGTH_SHORT).show();
+                    etFront.setText("");
+                    etBackside.setText("");
+                    etHashtag.setText("");
                 } else {
                     Toast.makeText(CreateCardActivity.this, "No se pudo crear la tarjeta", Toast.LENGTH_SHORT).show();
                 }

@@ -3,6 +3,7 @@ package com.esplai.flashcards.network;
 
 import com.esplai.flashcards.model.AccesToken;
 
+import com.esplai.flashcards.model.DeleteMessage;
 import com.esplai.flashcards.model.LoginUser;
 import com.esplai.flashcards.model.User;
 import com.esplai.flashcards.service.cardlogic.CardModel;
@@ -41,7 +42,7 @@ public interface ApiService {
     Call<List<CardModel>> getCardsByHashtag(@Header("Authorization") String token, @Query("hashtag") String hashtag);
 
     @DELETE("/flashcards/card/{id}")
-    Call<String>deleteCard(@Header("Authorization")String token,@Path("id")int id);
+    Call<DeleteMessage>deleteCard(@Header("Authorization")String token, @Path("id")int id);
 
     @GET("/flashcards/collection")
     Call <List<Collection>>getCollectionsFromUser(@Header("Authorization")String token);
